@@ -8,19 +8,31 @@
 </head>
 <body>
     <header>
-        <nav>
+        <nav class="navbar">
 
-            <div>
-                <h1>WeatherScope</h1>
+            <a href="index.html" class="logo">
                 <!--logo-->
-            </div>
+                <img src="images/logo.png" alt="Logo WeatherScope">
+                <h1>WeatherScope</h1>
+            </a>
 
-            <div>
+            <div class="navigation">
                 <!--Menu-->
+                <ul class="nav-links">
+                    <li><a href="#">Accueil</a></li>
+                    <li><a href="#">Carte</a></li>
+                    <li><a href="#">Prévisions</a></li>
+                    <li><a href="#">Favoris</a></li>
+                    <li><a href="#">Alertes</a></li>
+                    <li><a href="#">À propos</a></li>
+                </ul>
             </div>
 
-            <div>
+            <div class="search">
                 <!--bare recherche-->
+                <form>
+                <input type="search" placeholder="Rechercher une ville...">
+                </form>
             </div>
 
         </nav>
