@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeatherScope</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 </head>
 <body>
     <header>
@@ -80,6 +81,7 @@
                             <h1 id="temperature">24°C</h1>
                             <p id="description">Ciel dégagé</p>
                             <p id="city">Angers, France</p>
+                            <p id="datetime">Vendredi 25 juillet 2026 • 14:56</p>
                         </div>
                     </div>
                     <div class="weather-details">
@@ -100,7 +102,7 @@
 
                     <div class="detail">
                         <span>Ressenti</span>
-                        <p id="feels-like"></p>
+                        <p id="feels-like">en solier</p>
                     </div>
 
                 </div>
@@ -115,8 +117,18 @@
 
             
             <div class="hero-right">
+                <div id="map"> </div>
+                <div class="legend">
+                    <span>Froid</span>
+
+                    <div class="legend-gradient"></div>
+
+                    <span>Chaud</span>
+                </div>
             </div>
         </section>
     </main>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="js/script.js"></script>
 </body>
 </html>
