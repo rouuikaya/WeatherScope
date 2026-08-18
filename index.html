@@ -67,9 +67,11 @@
                 </div>
 
                 <div class="search-weather">
-                    <form>
-                        <input type="search" placeholder="Rechercher une ville ...">
-                        <img src="images/icon_recherche.svg" alt="Rechercher">
+                    <form id="search-form">
+                        <input id="city-search" type="search" placeholder="Rechercher une ville ...">
+                        <button type="submit">
+                            <img src="images/icon_recherche.svg" alt="Rechercher">
+                        </button>
                     </form>
                 </div>
             </div>
@@ -127,6 +129,221 @@
                 </div>
             </div>
         </section>
+        <section class="cities-weather">
+            <div class="cities-header">
+                <h2>Météo des grandes villes</h2>
+                <div class="cities-search">
+                    <form>
+                        <input type="search" id="cities-search" placeholder="Rechercher une ville ou une capitale...">
+                    </form>
+                </div>
+                <button id="show-more-cities">
+                    Afficher plus...
+                </button>
+            </div>
+            <div class="cities-table">
+                    <div class="city-row city-header-row">
+                    <span>Ville</span>
+                    <span>Pays</span>
+                    <span>Température</span>
+                    <span>Conditions</span>
+                    <span>Humidité</span>
+                    <span>Vent</span>
+                    <span>Min / Max</span>
+                    </div>
+
+                    <div id="cities-container">
+
+                    <!-- Les villes seront ajoutées ici avec JavaScript -->
+
+                    </div>
+            </div>
+        </section>
+        <section class="forecast">
+
+    <div class="forecast-title">
+        <h2>Prévisions pour <span id="forecast-city">Angers, France</span></h2>
+    </div>
+
+    <div class="forecast-days">
+        <button class="day active">Aujourd'hui</button>
+        <button class="day">Samedi</button>
+        <button class="day">Dimanche</button>
+        <button class="day">Lundi</button>
+        <button class="day">Mardi</button>
+        <button class="day">Mercredi</button>
+        <button class="day">Jeudi</button>
+    </div>
+
+    <div class="forecast-content">
+
+        <div class="forecast-main">
+            <div class="forecast-scroll">
+
+            <div class="hourly-forecast">
+
+                <div class="forecast-card">
+                    <span class="forecast-time">08:00</span>
+                    <img src="images/logo.png" alt="Météo">
+                    <strong>18°C</strong>
+                    <span>0%</span>
+                    <span>12 km/h</span>
+                </div>
+
+                <div class="forecast-card">
+                    <span class="forecast-time">11:00</span>
+                    <img src="images/logo.png" alt="Météo">
+                    <strong>22°C</strong>
+                    <span>0%</span>
+                    <span>14 km/h</span>
+                </div>
+
+                <div class="forecast-card">
+                    <span class="forecast-time">14:00</span>
+                    <img src="images/logo.png" alt="Météo">
+                    <strong>24°C</strong>
+                    <span>0%</span>
+                    <span>16 km/h</span>
+                </div>
+
+                <div class="forecast-card">
+                    <span class="forecast-time">17:00</span>
+                    <img src="images/logo.png" alt="Météo">
+                    <strong>23°C</strong>
+                    <span>5%</span>
+                    <span>18 km/h</span>
+                </div>
+
+                <div class="forecast-card">
+                    <span class="forecast-time">20:00</span>
+                    <img src="images/logo.png" alt="Météo">
+                    <strong>19°C</strong>
+                    <span>10%</span>
+                    <span>15 km/h</span>
+                </div>
+
+                <div class="forecast-card">
+                    <span class="forecast-time">23:00</span>
+                    <img src="images/logo.png" alt="Météo">
+                    <strong>16°C</strong>
+                    <span>10%</span>
+                    <span>12 km/h</span>
+                </div>
+
+            </div>
+            </div>
+
+
+            <div class="daily-forecast">
+
+                <div class="day-card">
+                    <strong>Samedi</strong>
+                    <small>25 Mai</small>
+                    <img src="images/logo.png" alt="Météo">
+                    <strong>25°C</strong>
+                    <span>15°C</span>
+                    <span>10%</span>
+                </div>
+
+                <div class="day-card">
+                    <strong>Dimanche</strong>
+                    <small>26 Mai</small>
+                    <img src="images/logo.png" alt="Météo">
+                    <strong>21°C</strong>
+                    <span>13°C</span>
+                    <span>60%</span>
+                </div>
+
+                <div class="day-card">
+                    <strong>Lundi</strong>
+                    <small>27 Mai</small>
+                    <img src="images/logo.png" alt="Météo">
+                    <strong>22°C</strong>
+                    <span>14°C</span>
+                    <span>20%</span>
+                </div>
+
+                <div class="day-card">
+                    <strong>Mardi</strong>
+                    <small>28 Mai</small>
+                    <img src="images/logo.png" alt="Météo">
+                    <strong>24°C</strong>
+                    <span>15°C</span>
+                    <span>10%</span>
+                </div>
+
+                <div class="day-card">
+                    <strong>Mercredi</strong>
+                    <small>29 Mai</small>
+                    <img src="images/logo.png" alt="Météo">
+                    <strong>20°C</strong>
+                    <span>14°C</span>
+                    <span>40%</span>
+                </div>
+
+                <div class="day-card">
+                    <strong>Jeudi</strong>
+                    <small>30 Mai</small>
+                    <img src="images/logo.png" alt="Météo">
+                    <strong>18°C</strong>
+                    <span>12°C</span>
+                    <span>70%</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <aside class="forecast-details">
+
+            <h3>Détails du jour</h3>
+
+            <div class="detail-row">
+                <span>Température max.</span>
+                <strong>24°C</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Température min.</span>
+                <strong>15°C</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Humidité</span>
+                <strong>48%</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Vent</span>
+                <strong>18 km/h</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Ressenti</span>
+                <strong>24°C</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Pression</span>
+                <strong>1015 hPa</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Visibilité</span>
+                <strong>10 km</strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Indice UV</span>
+                <strong>6 (Élevé)</strong>
+            </div>
+
+        </aside>
+
+    </div>
+
+</section>
     </main>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="js/script.js"></script>
