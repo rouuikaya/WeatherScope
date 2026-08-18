@@ -49,5 +49,348 @@
             </div>
         </nav>
     </header>
+
+    <main class="prevision-page">
+
+    <!-- =========================
+         EN-TÊTE DES PRÉVISIONS
+    ========================== -->
+
+    <section class="prevision-header">
+
+        <div class="prevision-location">
+
+            <p>PRÉVISIONS POUR</p>
+
+            <h2 id="prevision-city">
+                Angers, France
+            </h2>
+
+            <span id="prevision-coordinates">
+                47.47° N, 0.55° O
+            </span>
+
+        </div>
+
+        <button id="prevision-location-button">
+            Ma position actuelle
+        </button>
+
+    </section>
+
+
+    <!-- =========================
+         MÉTÉO ACTUELLE
+    ========================== -->
+
+    <section class="prevision-top">
+
+        <div class="prevision-current-card">
+
+            <div class="prevision-current-date">
+                Aujourd'hui • <span id="prevision-current-time">14:56</span>
+            </div>
+
+
+            <div class="prevision-current-main">
+
+                <img
+                    id="prevision-current-icon"
+                    src="images/weather/sun_icon.png"
+                    alt="Météo actuelle"
+                >
+
+                <div class="prevision-temperature">
+
+                    <strong id="prevision-current-temperature">
+                        24°C
+                    </strong>
+
+                    <p id="prevision-current-description">
+                        Ciel dégagé
+                    </p>
+
+                    <span>
+                        Ressenti
+                        <span id="prevision-feels-like">
+                            24°C
+                        </span>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Informations actuelles -->
+
+            <div class="prevision-current-details">
+
+                <div class="prevision-detail">
+
+                    <span>Humidité</span>
+
+                    <strong id="prevision-humidity">
+                        48%
+                    </strong>
+
+                </div>
+
+
+                <div class="prevision-detail">
+
+                    <span>Vent</span>
+
+                    <strong id="prevision-wind">
+                        18 km/h
+                    </strong>
+
+                </div>
+
+
+                <div class="prevision-detail">
+
+                    <span>Pression</span>
+
+                    <strong id="prevision-pressure">
+                        1015 hPa
+                    </strong>
+
+                </div>
+
+
+                <div class="prevision-detail">
+
+                    <span>Visibilité</span>
+
+                    <strong id="prevision-visibility">
+                        10 km
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             ÉVOLUTION DE LA JOURNÉE
+        ========================== -->
+
+        <div class="prevision-evolution">
+
+            <h3>ÉVOLUTION DE LA JOURNÉE</h3>
+
+            <div
+                class="prevision-hourly-chart"
+                id="prevision-hourly-chart"
+            >
+
+                <!--
+                    Les prévisions horaires
+                    seront ajoutées par JavaScript
+                -->
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CARTE + ANALYSE
+    ========================== -->
+
+    <section class="prevision-analysis-section">
+
+
+        <!-- CARTE -->
+
+        <div class="prevision-map-card">
+
+            <h3>CARTE MÉTÉO</h3>
+
+            <div
+                id="prevision-map"
+                class="prevision-map"
+            >
+            </div>
+
+
+            <!-- Filtres de carte -->
+
+            <div class="prevision-map-filters">
+
+                <button class="map-filter active">
+                    Température
+                </button>
+
+                <button class="map-filter">
+                    Pluie
+                </button>
+
+                <button class="map-filter">
+                    Nuages
+                </button>
+
+                <button class="map-filter">
+                    Vent
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ANALYSE DU JOUR -->
+
+        <div class="prevision-analysis">
+
+            <h3>ANALYSE DU JOUR</h3>
+
+
+            <div class="analysis-cards">
+
+
+                <!-- Température -->
+
+                <div class="analysis-card">
+
+                    <h4>Température</h4>
+
+                    <div class="analysis-values">
+
+                        <span>
+                            Min
+                            <strong id="analysis-min-temp">
+                                15°C
+                            </strong>
+                        </span>
+
+                        <span>
+                            Max
+                            <strong id="analysis-max-temp">
+                                27°C
+                            </strong>
+                        </span>
+
+                    </div>
+
+                    <div
+                        class="analysis-chart"
+                        id="temperature-chart"
+                    >
+                    </div>
+
+                </div>
+
+
+                <!-- Précipitations -->
+
+                <div class="analysis-card">
+
+                    <h4>Précipitations</h4>
+
+                    <div class="analysis-main-value">
+
+                        <strong id="analysis-precipitation">
+                            1.2 mm
+                        </strong>
+
+                        <span>Total</span>
+
+                    </div>
+
+                    <div
+                        class="analysis-chart"
+                        id="precipitation-chart"
+                    >
+                    </div>
+
+                </div>
+
+
+                <!-- Vent -->
+
+                <div class="analysis-card">
+
+                    <h4>Vent</h4>
+
+                    <div class="analysis-main-value">
+
+                        <strong id="analysis-wind">
+                            18 km/h
+                        </strong>
+
+                        <span>Max</span>
+
+                    </div>
+
+                    <div
+                        class="analysis-chart"
+                        id="wind-chart"
+                    >
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         PRÉVISIONS SUR 7 JOURS
+    ========================== -->
+
+    <section class="prevision-week-section">
+
+        <h3>7 PROCHAINS JOURS</h3>
+
+
+        <div
+            class="prevision-week-container"
+            id="prevision-week-container"
+        >
+
+            <!--
+                Les 7 jours seront générés
+                dynamiquement avec JavaScript
+            -->
+
+        </div>
+
+
+        <div class="prevision-info">
+
+            <span class="prevision-info-icon">
+                i
+            </span>
+
+            <p>
+                Les prévisions sont données à titre indicatif
+                et peuvent évoluer.
+            </p>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer>
+
+    <p>
+        © 2026 WeatherScope
+    </p>
+
+</footer>
+
+<script src="js/script.js"></script>
 </body>
 </html>

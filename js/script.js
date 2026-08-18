@@ -1,5 +1,5 @@
 let dataForecast;
-const API_KEY=""
+const API_KEY="0de7ca009ae8b8285e591666457dfdfa"
 const ville="Angers"; 
 const url = `https://api.openweathermap.org/data/2.5/weather?q=${ville}&appid=${API_KEY}&units=metric&lang=fr`;
 fetch(url)
@@ -25,7 +25,10 @@ fetch(url)
 
         console.log("Météo :", weather);
 
-        const weatherIcon = getWeatherIcon(weather);
+        const weatherIcon = getWeatherIcon(
+    weather,
+    data.weather[0].icon
+);
 
         console.log("Mon icône :", weatherIcon);
 
@@ -35,6 +38,16 @@ fetch(url)
         const date = new Date(data.dt*1000);
         document.getElementById("datetime").textContent =
             date.toLocaleString("fr-FR") ; 
+
+        const maintenant = data.dt;
+const lever = data.sys.sunrise;
+const coucher = data.sys.sunset;
+
+const estNuit = maintenant < lever || maintenant > coucher;
+
+console.log("Lever :", new Date(lever * 1000).toLocaleTimeString("fr-FR"));
+console.log("Coucher :", new Date(coucher * 1000).toLocaleTimeString("fr-FR"));
+console.log("Est-ce la nuit ?", estNuit);
 
         const map=L.map('map').setView([20,0] , 2) ; 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' , {
@@ -59,21 +72,48 @@ marker.bindPopup(`
 marker.openPopup();
         });
 
+function getWeatherIcon(weather, iconCode) {
 
-function getWeatherIcon(weather){
+    // Nuit : ciel dégagé
+    if (iconCode && iconCode.endsWith("n")) {
+
+        if (weather.includes("Clear")) {
+            return "images/weather/moon_icon.png";
+        }
+
+        if (weather.includes("Clouds")) {
+            return "images/weather/night_clouds_icon.png";
+        }
+    }
+
+    // Jour : quelques nuages
+    if (iconCode === "02d") {
+        return "images/weather/weather_icon.png";
+    }
+
+    // Jour
     if (weather.includes("Thunderstorm")) {
         return "images/weather/thunder_icon.png";
+    }
+
+    if (weather.includes("Drizzle")) {
+        return "images/weather/rainy-day_icon.png";
+    }
+
+    if (weather.includes("Rain")) {
+        return "images/weather/rainy-day_icon.png";
     }
 
     if (weather.includes("Snow")) {
         return "images/weather/snow_icon.png";
     }
 
-    if (weather.includes("Rain")) {
-        return "images/weather/rainy-day.png";
-    }
-
-    if (weather.includes("Clouds")) {
+    if (
+        weather.includes("Mist") ||
+        weather.includes("Fog") ||
+        weather.includes("Haze") ||
+        weather.includes("Smoke")
+    ) {
         return "images/weather/cloudy_icon.png";
     }
 
@@ -81,9 +121,12 @@ function getWeatherIcon(weather){
         return "images/weather/sun_icon.png";
     }
 
+    if (weather.includes("Clouds")) {
+        return "images/weather/cloudy_icon.png";
+    }
+
     return "images/weather/cloudy_icon.png";
 }
-
 
 
 
@@ -163,7 +206,10 @@ async function afficherPrevisions() {
         const humidite = forecast.main.humidity;
         const vent = (forecast.wind.speed * 3.6).toFixed(1);
         const weather = forecast.weather[0].main;
-        const icon = getWeatherIcon(weather);
+        const icon = getWeatherIcon(
+    weather,
+    forecast.weather[0].icon
+);
 
         card.innerHTML = `
             <span class="forecast-time">${heure}</span>
@@ -277,8 +323,13 @@ boutonsJours.forEach(function(bouton, index) {
             }
         }
 
+        
         const weather = forecastMidi.weather[0].main;
-        const icon = getWeatherIcon(weather);
+
+        const icon = getWeatherIcon(
+    weather,
+    forecastMidi.weather[0].icon
+);
 
         const dateObjet = new Date(date);
 
@@ -379,9 +430,24 @@ function afficherPrevisionsHoraires(date) {
         const vent = (forecast.wind.speed * 3.6).toFixed(1);
 
         const weather = forecast.weather[0].main;
+        
+        console.log(
+    heure,
+    "météo =",
+    weather,
+    "description =",
+    forecast.weather[0].description,
+    "icon OpenWeather =",
+    forecast.weather[0].icon
+);
 
-        const icon = getWeatherIcon(weather);
 
+
+        const icon = getWeatherIcon(
+    weather,
+    forecast.weather[0].icon
+);
+        console.log(heure, weather, icon);
         card.innerHTML = `
             <span class="forecast-time">${heure}</span>
 
