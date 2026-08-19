@@ -1,5 +1,5 @@
 let dataForecast;
-const API_KEY="0de7ca009ae8b8285e591666457dfdfa"
+const API_KEY=""
 const ville="Angers"; 
 const url = `https://api.openweathermap.org/data/2.5/weather?q=${ville}&appid=${API_KEY}&units=metric&lang=fr`;
 fetch(url)
@@ -546,3 +546,157 @@ searchForm.addEventListener("submit", function(event) {
     console.log(searchInput.value);
 
 });
+
+// =========================================================
+// PAGE PREVISIONS
+// METEO ACTUELLE
+// =========================================================
+
+const previsionCity = document.getElementById("prevision-city");
+
+if (previsionCity) {
+
+    const previsionVille = "Angers";
+
+    const previsionUrl =
+        `https://api.openweathermap.org/data/2.5/weather?q=${previsionVille}&appid=${API_KEY}&units=metric&lang=fr`;
+
+    fetch(previsionUrl)
+        .then(response => response.json())
+        .then(data => {
+
+            console.log("Météo page prévisions :", data);
+
+            // Ville
+            document.getElementById("prevision-city").textContent =
+                data.name + ", France";
+
+            // Coordonnées
+            document.getElementById("prevision-coordinates").textContent =
+                data.coord.lat.toFixed(2) + "° N, " +
+                Math.abs(data.coord.lon).toFixed(2) + "° O";
+
+            // Température
+            document.getElementById("prevision-current-temperature").textContent =
+                Math.round(data.main.temp) + "°C";
+
+            // Description
+            document.getElementById("prevision-current-description").textContent =
+                data.weather[0].description;
+
+            // Ressenti
+            document.getElementById("prevision-feels-like").textContent =
+                Math.round(data.main.feels_like) + "°C";
+
+            // Humidité
+            document.getElementById("prevision-humidity").textContent =
+                data.main.humidity + "%";
+
+            // Vent
+            document.getElementById("prevision-wind").textContent =
+                (data.wind.speed * 3.6).toFixed(1) + " km/h";
+
+            // Pression
+            document.getElementById("prevision-pressure").textContent =
+                data.main.pressure + " hPa";
+
+            // Visibilité
+            document.getElementById("prevision-visibility").textContent =
+                (data.visibility / 1000).toFixed(1) + " km";
+
+            // Icône
+            const weather = data.weather[0].main;
+
+            const icon = getWeatherIcon(
+                weather,
+                data.weather[0].icon
+            );
+
+            document.getElementById("prevision-current-icon").src =
+                icon;
+
+            // Heure
+            const date = new Date(data.dt * 1000);
+
+            document.getElementById("prevision-current-time").textContent =
+                date.toLocaleTimeString(
+                    "fr-FR",
+                    {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    }
+                );
+
+        })
+        .catch(error => {
+            console.error(
+                "Erreur météo page prévisions :",
+                error
+            );
+        });
+}
+// =========================================================
+// PAGE PREVISIONS
+// EVOLUTION DE LA JOURNEE
+// =========================================================
+
+if (previsionCity) {
+
+    async function afficherEvolutionJournee() {
+
+        const data = await getForecast("Angers");
+
+        const hourlyContainer =
+            document.getElementById("prevision-hourly-chart");
+
+        hourlyContainer.innerHTML = "";
+
+        // On prend les 8 premières prévisions
+        // OpenWeather donne une prévision toutes les 3 heures
+        for (let i = 0; i < 8; i++) {
+
+            const forecast = data.list[i];
+
+            const heure = forecast.dt_txt
+                .split(" ")[1]
+                .slice(0, 5);
+
+            const temperature =
+                Math.round(forecast.main.temp);
+
+            const weather =
+                forecast.weather[0].main;
+
+            const icon = getWeatherIcon(
+                weather,
+                forecast.weather[0].icon
+            );
+
+            const card =
+                document.createElement("div");
+
+            card.classList.add(
+                "prevision-hour-card"
+            );
+
+            card.innerHTML = `
+                <span class="prevision-hour">
+                    ${heure}
+                </span>
+
+                <img
+                    src="${icon}"
+                    alt="${forecast.weather[0].description}"
+                >
+
+                <strong>
+                    ${temperature}°C
+                </strong>
+            `;
+
+            hourlyContainer.appendChild(card);
+        }
+    }
+
+    afficherEvolutionJournee();
+}
