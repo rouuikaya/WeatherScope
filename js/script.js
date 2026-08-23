@@ -1,6 +1,7 @@
 let dataForecast;
 const API_KEY=""
-const ville="Angers"; 
+const ville =
+    localStorage.getItem("villeRecherchee") || "Angers";
 const url = `https://api.openweathermap.org/data/2.5/weather?q=${ville}&appid=${API_KEY}&units=metric&lang=fr`;
 
 const temperatureElement =
@@ -112,6 +113,19 @@ marker.bindPopup(`
 marker.openPopup();
         });
     }
+
+
+// Choisir le nom du pays à partir de son code
+function obtenirNomPays(codePays) {
+
+    const nomsPays =
+        new Intl.DisplayNames(
+            ["fr"],
+            { type: "region" }
+        );
+
+    return nomsPays.of(codePays);
+}
 
 // Choisir l'icône personnalisée correspondant à la météo
 function getWeatherIcon(weather, iconCode) {
@@ -605,14 +619,200 @@ function afficherDetailsJour(date) {
 }
 }
 
-const searchInput = document.getElementById("city-search") ; 
+const searchInput = document.getElementById("city-search");
 const searchForm = document.getElementById("search-form");
 
 if (searchForm) {
-    searchForm.addEventListener("submit", function(event) {
+
+    searchForm.addEventListener("submit", async function(event) {
+
         event.preventDefault();
-        console.log(searchInput.value);
+
+        const villeRecherchee = searchInput.value.trim();
+
+        if (villeRecherchee === "") {
+            return;
+        }
+
+        try {
+
+            const data = await getWeather(villeRecherchee);
+
+            if (data.cod !== 200) {
+                console.log("Ville introuvable");
+                return;
+            }
+
+            localStorage.setItem(
+    "villeRecherchee",
+    data.name
+);
+
+localStorage.setItem(
+    "villeActuelle",
+    data.name
+);
+
+            window.location.href = "previsions.html";
+
+        } catch (error) {
+
+            console.error(
+                "Erreur lors de la recherche :",
+                error
+            );
+
+        }
+
     });
+
+}
+
+const welcomeOverlay =
+    document.getElementById("welcome-overlay");
+
+if (welcomeOverlay) {
+
+    // =========================================================
+// ÉCRITURE DE "BIENVENUE"
+// =========================================================
+
+function ecrireBienvenue() {
+
+    const message =
+        document.getElementById("welcome-message");
+
+    if (!message) {
+        return;
+    }
+
+    const texte = "Bienvenue";
+
+    message.textContent = "";
+    message.classList.add("visible");
+
+    let position = 0;
+
+    const intervalle = setInterval(function() {
+
+        message.textContent += texte[position];
+
+        position++;
+
+        if (position >= texte.length) {
+
+            clearInterval(intervalle);
+
+        }
+
+    }, 150);
+}
+
+
+    setTimeout(function() {
+        ecrireBienvenue();
+    }, 3000);
+
+    setTimeout(function() {
+
+    const actions =
+        document.querySelector(".welcome-actions");
+
+    if (!actions) {
+        return;
+    }
+
+    actions.classList.add("visible");
+
+}, 5000);
+
+// =====================================================
+// BOUTON : UTILISER MA POSITION
+// =====================================================
+
+const boutonPosition =
+    document.getElementById("welcome-location-button");
+
+if (boutonPosition) {
+
+    boutonPosition.addEventListener(
+        "click",
+        function() {
+
+            if (!navigator.geolocation) {
+
+                alert(
+                    "La géolocalisation n'est pas disponible sur ce navigateur."
+                );
+
+                return;
+            }
+
+           navigator.geolocation.getCurrentPosition(
+
+    function(position) {
+
+        const latitude =
+    position.coords.latitude;
+
+const longitude =
+    position.coords.longitude;
+
+console.log("Latitude :", latitude);
+console.log("Longitude :", longitude);
+
+// Récupérer la météo de la position
+const urlPosition =
+    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric&lang=fr`;
+
+fetch(urlPosition)
+    .then(function(response) {
+        return response.json();
+    })
+    .then(function(data) {
+
+        console.log("Météo de ma position :", data);
+
+        // Sauvegarder la ville trouvée
+       localStorage.setItem(
+    "villeLocalisation",
+    data.name
+);
+
+localStorage.setItem(
+    "villeActuelle",
+    data.name
+);
+        // Fermer l'écran de bienvenue
+        welcomeOverlay.classList.add("hidden");
+
+    })
+    .catch(function(error) {
+
+        console.error(
+            "Erreur lors de la récupération de la météo :",
+            error
+        );
+
+    });
+
+    },
+
+    function(error) {
+
+        console.log(
+            "Géolocalisation refusée ou impossible :",
+            error
+        );
+
+    }
+
+);
+
+        }
+    );
+
+}
 }
 // =========================================================
 // PAGE PRÉVISIONS
@@ -626,7 +826,8 @@ if (previsionPage) {
     // VILLE TEMPORAIRE
     // =====================================================
 
-    const villePrevision = "Angers";
+    const villePrevision =
+    localStorage.getItem("villeRecherchee") || "Angers";
 
     // Données des prévisions
     let previsionData = null;
@@ -646,8 +847,10 @@ if (previsionPage) {
             // Ville
             // -------------------------
 
+            const pays = obtenirNomPays(data.sys.country);
+
             document.getElementById("prevision-city").textContent =
-                data.name + ", France";
+                data.name + ", " + pays;
 
 
             // -------------------------

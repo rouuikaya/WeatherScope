@@ -8,6 +8,47 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
 </head>
 <body>
+
+    <!-- =========================
+     ÉCRAN DE DÉMARRAGE
+========================= -->
+
+<div class="welcome-overlay" id="welcome-overlay">
+
+    <div class="welcome-screen">
+
+        <img
+            src="images/logo.png"
+            alt="Logo WeatherScope"
+            class="welcome-logo"
+        >
+
+        <h1
+            class="welcome-title"
+            id="welcome-title"
+        >
+            WeatherScope
+        </h1>
+
+        <p class="welcome-message" id="welcome-message"></p>
+
+        <div class="welcome-actions">
+
+            <button id="welcome-location-button">
+                Utiliser ma position
+            </button>
+
+            <span>ou</span>
+
+            <button id="welcome-search-button">
+                Rechercher une ville
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
     <header>
         <nav class="navbar">
 

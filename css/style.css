@@ -1508,3 +1508,256 @@ main{
 
     font-size: 14px;
 }
+
+/* =========================================================
+   ÉCRAN DE DÉMARRAGE WEATHER SCOPE
+========================================================= */
+
+.welcome-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #071a2f;
+    overflow: hidden;
+
+        opacity: 1;
+    visibility: visible;
+}
+.welcome-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity 0.8s ease,
+        visibility 0.8s ease;
+}
+
+.welcome-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+}
+
+
+/* =========================
+   LOGO
+========================= */
+
+.welcome-logo {
+    width: 230px;
+    height: 230px;
+
+    object-fit: contain;
+
+    opacity: 0;
+
+    animation:
+        welcomeLogoAppear 2s ease forwards,
+        welcomeLogoGlow 3s ease-in-out 2s infinite;
+}
+
+
+/* =========================
+   NOM WEATHER SCOPE
+========================= */
+
+.welcome-title {
+    margin-top: 20px;
+
+    font-size: 42px;
+    font-weight: 700;
+
+    opacity: 0;
+
+    animation: welcomeTitleAppear 1.5s ease 1s forwards;
+}
+
+
+/* =========================
+   BOUTONS
+========================= */
+
+.welcome-actions {
+    margin-top: 45px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+
+    opacity: 0;
+    transform: translateY(20px);
+
+    transition:
+        opacity 1s ease,
+        transform 1s ease;
+}
+
+.welcome-actions button {
+    position: relative;
+
+    width: 270px;
+    padding: 15px 25px;
+
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: white;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    backdrop-filter: blur(10px);
+
+    transition:
+        transform 0.3s ease,
+        background 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.welcome-actions button:hover {
+
+    transform: translateY(-3px);
+
+    background: rgba(255, 255, 255, 0.14);
+
+    border-color: rgba(255, 255, 255, 0.35);
+
+    box-shadow:
+        0 0 15px rgba(70, 160, 255, 0.25),
+        0 0 35px rgba(70, 160, 255, 0.12);
+}
+.welcome-actions button:active {
+    transform: scale(0.97);
+}
+.welcome-actions span {
+    font-size: 13px;
+
+    color: rgba(255, 255, 255, 0.55);
+
+    margin: 2px 0;
+}
+
+
+/* =========================
+   ANIMATION DU LOGO
+========================= */
+
+@keyframes welcomeLogoAppear {
+
+    0% {
+        opacity: 0;
+        transform: scale(0.65);
+        filter: blur(18px)
+                drop-shadow(0 0 0 rgba(255,255,255,0));
+    }
+
+    45% {
+        opacity: 1;
+        transform: scale(1.08);
+        filter: blur(3px)
+                drop-shadow(0 0 25px rgba(255,255,255,0.35))
+                drop-shadow(0 0 60px rgba(70,160,255,0.35));
+    }
+
+    75% {
+        transform: scale(0.98);
+        filter: blur(0)
+                drop-shadow(0 0 35px rgba(255,255,255,0.45))
+                drop-shadow(0 0 80px rgba(70,160,255,0.4));
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0)
+                drop-shadow(0 0 20px rgba(255,255,255,0.25))
+                drop-shadow(0 0 55px rgba(70,160,255,0.3));
+    }
+}
+
+
+@keyframes welcomeLogoGlow {
+
+    0% {
+        transform: scale(1);
+        filter:
+            drop-shadow(0 0 18px rgba(255,255,255,0.2))
+            drop-shadow(0 0 45px rgba(70,160,255,0.25));
+    }
+
+    50% {
+        transform: scale(1.025);
+        filter:
+            drop-shadow(0 0 30px rgba(255,255,255,0.4))
+            drop-shadow(0 0 75px rgba(70,160,255,0.45));
+    }
+
+    100% {
+        transform: scale(1);
+        filter:
+            drop-shadow(0 0 18px rgba(255,255,255,0.2))
+            drop-shadow(0 0 45px rgba(70,160,255,0.25));
+    }
+}
+
+/* =========================
+   ANIMATION DU TITRE
+========================= */
+
+@keyframes welcomeTitleAppear {
+
+    0% {
+        opacity: 0;
+        transform: translateY(15px);
+        filter: blur(8px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+/* le welcome message*/
+.welcome-message {
+    margin-top: 12px;
+
+    font-size: 22px;
+    font-weight: 500;
+
+    color: white;
+
+    min-height: 30px;
+
+    opacity: 0;
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,0.25),
+        0 0 25px rgba(70,160,255,0.25);
+
+    transition: opacity 0.5s ease;
+}
+
+.welcome-message.visible {
+    opacity: 1;
+}
+.welcome-actions.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
