@@ -1,7 +1,7 @@
 let dataForecast;
 const API_KEY=""
 const ville =
-    localStorage.getItem("villeRecherchee") || "Angers";
+    localStorage.getItem("villeActuelle") || "Angers";
 const url = `https://api.openweathermap.org/data/2.5/weather?q=${ville}&appid=${API_KEY}&units=metric&lang=fr`;
 
 const temperatureElement =
@@ -808,6 +808,129 @@ localStorage.setItem(
     }
 
 );
+
+        }
+    );
+
+}
+
+// =====================================================
+// BOUTON : RECHERCHER UNE VILLE
+// =====================================================
+
+const boutonRecherche =
+    document.getElementById("welcome-search-button");
+
+if (boutonRecherche) {
+
+    boutonRecherche.addEventListener(
+        "click",
+        function() {
+
+            const actions =
+                document.querySelector(".welcome-actions");
+
+            const message =
+                document.getElementById("welcome-message");
+
+            if (actions) {
+                actions.classList.add("hidden");
+            }
+
+            if (message) {
+                message.textContent =
+                    "Recherchez votre ville";
+            }
+
+            const welcomeScreen =
+    document.querySelector(".welcome-screen");
+
+const searchBox =
+    document.querySelector(".welcome-search");
+
+if (welcomeScreen) {
+    welcomeScreen.classList.add("search-mode");
+}
+
+if (searchBox) {
+    setTimeout(function() {
+
+        searchBox.classList.add("visible");
+
+    }, 250);
+}
+
+        }
+    );
+
+}
+
+// =====================================================
+// RECHERCHE DEPUIS L'ÉCRAN DE BIENVENUE
+// =====================================================
+
+const welcomeSearchForm =
+    document.getElementById("welcome-search-form");
+
+const welcomeCitySearch =
+    document.getElementById("welcome-city-search");
+
+if (welcomeSearchForm) {
+
+    welcomeSearchForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const ville =
+                welcomeCitySearch.value.trim();
+
+            if (ville === "") {
+                return;
+            }
+
+            try {
+
+                const data =
+                    await getWeather(ville);
+
+                if (data.cod !== 200) {
+
+                    console.log(
+                        "Ville introuvable"
+                    );
+
+                    return;
+                }
+
+                // Enregistrer la ville choisie
+                localStorage.setItem(
+                    "villeRecherchee",
+                    data.name
+                );
+
+                localStorage.setItem(
+                    "villeActuelle",
+                    data.name
+                );
+
+                // Fermer l'écran de bienvenue
+                welcomeOverlay.classList.add(
+                    "hidden"
+                );
+
+                // Retourner à l'accueil
+                //window.location.href = "index.html";
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur lors de la recherche :",
+                    error
+                );
+
+            }
 
         }
     );
