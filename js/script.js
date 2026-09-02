@@ -89,28 +89,8 @@ console.log("Lever :", new Date(lever * 1000).toLocaleTimeString("fr-FR"));
 console.log("Coucher :", new Date(coucher * 1000).toLocaleTimeString("fr-FR"));
 console.log("Est-ce la nuit ?", estNuit);
 */
-
-        const map=L.map('map').setView([20,0] , 2) ; 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' , {
-        attribution:'&copy; OpenStreetMap contributors'
-        }).addTo(map) ;
-        L.tileLayer(
-    `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${API_KEY}`,
-    {
-        opacity: 1
-    }
-).addTo(map);
-        const marker = L.marker([data.coord.lat, data.coord.lon]).addTo(map)
-marker.bindPopup(`
-<div class="weather-popup">
-        <h3>${data.name}</h3>
-        <div class="popup-temp">
-        <img src="${weatherIcon}" alt="Météo">
-        <span>${Math.round(data.main.temp)}°C</span>
-    </div>
-    </div>
-`);
-marker.openPopup();
+        afficherMeteoAccueil(data);
+    
         });
     }
 
@@ -207,6 +187,224 @@ async function getWeather(city) {
 
     return data;
 }
+
+
+// =====================================================
+// METTRE À JOUR LA MÉTÉO DE L'ACCUEIL
+// =====================================================
+
+
+let accueilMap = null;
+let accueilMarker = null;
+
+function afficherMeteoAccueil(data) {
+
+    const temperatureElement =
+        document.getElementById("temperature");
+
+    // Cette fonction concerne uniquement index.html
+    if (!temperatureElement) {
+        return;
+    }
+
+
+    // Température
+    document.getElementById("temperature").textContent =
+        Math.round(data.main.temp) + "°C";
+
+
+    // Humidité
+    document.getElementById("humidity").textContent =
+        data.main.humidity + "%";
+
+
+    // Vent
+    document.getElementById("wind").textContent =
+        (data.wind.speed * 3.6).toFixed(1) + " Km/h";
+
+
+    // Pression
+    document.getElementById("pressure").textContent =
+        data.main.pressure + " hPa";
+
+
+    // Ressenti
+    document.getElementById("feels-like").textContent =
+        Math.round(data.main.feels_like) + "°C";
+
+
+    // Description
+    document.getElementById("description").textContent =
+        data.weather[0].description;
+
+
+    // Ville
+    document.getElementById("city").textContent =
+        data.name;
+
+
+    // Icône météo
+    const weather =
+        data.weather[0].main;
+
+    const weatherIcon =
+        getWeatherIcon(
+            weather,
+            data.weather[0].icon
+        );
+
+    document.getElementById("weather_icon").src =
+        weatherIcon;
+
+
+    // Date / heure
+    const date =
+        new Date(data.dt * 1000);
+
+    document.getElementById("datetime").textContent =
+        date.toLocaleString("fr-FR");
+
+
+    // Fond dynamique
+    const heroLeft =
+        document.querySelector(".hero-left");
+
+    if (heroLeft) {
+
+        if (weather === "Clear") {
+            heroLeft.style.backgroundImage =
+                "url('images/background/clear.jpg')";
+        }
+
+        else if (weather === "Clouds") {
+            heroLeft.style.backgroundImage =
+                "url('images/background/clouds.jpg')";
+        }
+
+        else if (
+            weather === "Rain" ||
+            weather === "Drizzle"
+        ) {
+            heroLeft.style.backgroundImage =
+                "url('images/background/rain.jpg')";
+        }
+
+        else if (weather === "Snow") {
+            heroLeft.style.backgroundImage =
+                "url('images/background/snow.jpg')";
+        }
+
+        else if (weather === "Thunderstorm") {
+            heroLeft.style.backgroundImage =
+                "url('images/background/thunderstorm.jpg')";
+        }
+
+        else {
+            heroLeft.style.backgroundImage =
+                "url('images/background/clouds.jpg')";
+        }
+    }
+
+
+
+        // =====================================================
+    // METTRE À JOUR LA CARTE
+    // =====================================================
+
+    initialiserCarteAccueil(data);
+
+    
+}
+
+
+function initialiserCarteAccueil(data) {
+
+    const mapElement =
+        document.getElementById("map");
+
+    if (!mapElement) {
+        return;
+    }
+
+    // Créer la carte une seule fois
+    if (!accueilMap) {
+
+        accueilMap =
+            L.map("map").setView(
+                [data.coord.lat, data.coord.lon],
+                10
+            );
+
+        L.tileLayer(
+            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            {
+                attribution:
+                    "&copy; OpenStreetMap contributors"
+            }
+        ).addTo(accueilMap);
+
+        L.tileLayer(
+            `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${API_KEY}`,
+            {
+                opacity: 1
+            }
+        ).addTo(accueilMap);
+
+    } else {
+
+        // La carte existe déjà :
+        // on la déplace vers la nouvelle ville
+        accueilMap.setView(
+            [data.coord.lat, data.coord.lon],
+            10
+        );
+
+    }
+
+    // Supprimer l'ancien marqueur
+    if (accueilMarker) {
+
+        accueilMap.removeLayer(
+            accueilMarker
+        );
+
+    }
+
+    // Créer le nouveau marqueur
+    accueilMarker =
+        L.marker(
+            [data.coord.lat, data.coord.lon]
+        ).addTo(accueilMap);
+
+    accueilMarker.bindPopup(`
+        <div class="weather-popup">
+
+            <h3>${data.name}</h3>
+
+            <div class="popup-temp">
+
+                <img
+                    src="${getWeatherIcon(
+                        data.weather[0].main,
+                        data.weather[0].icon
+                    )}"
+                    alt="Météo"
+                >
+
+                <span>
+                    ${Math.round(data.main.temp)}°C
+                </span>
+
+            </div>
+
+        </div>
+    `);
+
+    accueilMarker.openPopup();
+}
+
+
+
 
 // Récupérer le conteneur qui accueillera les villes
 const citiesContainer = document.getElementById("cities-container");
@@ -618,7 +816,72 @@ function afficherDetailsJour(date) {
         "Non disponible";
 }
 }
+// =====================================================
+// RECHERCHE GLOBALE DU HEADER
+// Fonctionne sur toutes les pages
+// =====================================================
 
+const globalSearchForm =
+    document.getElementById("global-search-form");
+
+const globalCitySearch =
+    document.getElementById("global-city-search");
+
+if (globalSearchForm && globalCitySearch) {
+
+    globalSearchForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const ville =
+                globalCitySearch.value.trim();
+
+            if (ville === "") {
+                return;
+            }
+
+            try {
+
+                const data =
+                    await getWeather(ville);
+
+                if (data.cod !== 200) {
+
+                    alert("Ville introuvable.");
+
+                    return;
+                }
+
+                // Enregistrer la ville recherchée
+                localStorage.setItem(
+                    "villeRecherchee",
+                    data.name
+                );
+
+                localStorage.setItem(
+                    "villeActuelle",
+                    data.name
+                );
+
+                // Aller directement vers les prévisions
+                window.location.href =
+                    "previsions.html";
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur lors de la recherche :",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+}
 const searchInput = document.getElementById("city-search");
 const searchForm = document.getElementById("search-form");
 
@@ -673,6 +936,26 @@ const welcomeOverlay =
 
 if (welcomeOverlay) {
 
+
+        // =====================================================
+    // AFFICHER L'ÉCRAN DE BIENVENUE UNE SEULE FOIS
+    // =====================================================
+
+    const navigation =
+    performance.getEntriesByType("navigation")[0];
+
+const typeNavigation =
+    navigation ? navigation.type : "navigate";
+
+const siteDejaCommence =
+    sessionStorage.getItem("weatherScopeStarted");
+
+if (
+    typeNavigation !== "reload" &&
+    siteDejaCommence === "oui"
+) {
+    welcomeOverlay.classList.add("hidden");
+}
     // =========================================================
 // ÉCRITURE DE "BIENVENUE"
 // =========================================================
@@ -783,16 +1066,18 @@ localStorage.setItem(
     "villeActuelle",
     data.name
 );
-        // Fermer l'écran de bienvenue
-        welcomeOverlay.classList.add("hidden");
 
-    })
-    .catch(function(error) {
+        // Afficher immédiatement la météo GPS
+        afficherMeteoAccueil(data);
 
-        console.error(
-            "Erreur lors de la récupération de la météo :",
-            error
+        // Mémoriser que le site a été commencé
+        sessionStorage.setItem(
+        "weatherScopeStarted",
+        "oui"
         );
+        // Fermer l'écran de bienvenue
+welcomeOverlay.classList.add("hidden");
+    
 
     });
 
@@ -915,6 +1200,16 @@ if (welcomeSearchForm) {
                     data.name
                 );
 
+
+                sessionStorage.setItem(
+                "weatherScopeStarted",
+                "oui"
+                );
+
+                // Afficher immédiatement la nouvelle ville 
+                afficherMeteoAccueil(data);
+
+
                 // Fermer l'écran de bienvenue
                 welcomeOverlay.classList.add(
                     "hidden"
@@ -936,6 +1231,44 @@ if (welcomeSearchForm) {
     );
 
 }
+
+}
+
+// =========================================================
+// ANIMATION DES SECTIONS DE INDEX.HTML
+// =========================================================
+
+const elementsScroll =
+    document.querySelectorAll(".scroll-reveal");
+
+if (elementsScroll.length > 0) {
+
+    const observer =
+        new IntersectionObserver(
+            function(entries) {
+
+                entries.forEach(function(entry) {
+
+                    if (entry.isIntersecting) {
+
+                        entry.target.classList.add("visible");
+
+                        observer.unobserve(entry.target);
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.15
+            }
+        );
+
+    elementsScroll.forEach(function(element) {
+
+        observer.observe(element);
+
+    });
 }
 // =========================================================
 // PAGE PRÉVISIONS
@@ -2098,3 +2431,4 @@ boutonsCarte.forEach(function(bouton) {
 }
 initialiserCarte();
 }
+

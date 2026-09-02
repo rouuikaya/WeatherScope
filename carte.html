@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeatherScope</title>
     <link rel="stylesheet" href="css/style.css">
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+>
 </head>
 <body>
     <header>
@@ -31,11 +35,21 @@
             <div class="right-side">
 
             <div class="search">
-                <!--bare recherche-->
-                <form>
-                <input type="search" placeholder="Rechercher une ville...">
-                <img src="images/search.svg" alt="Rechercher">
+
+                <form id="global-search-form">
+
+                    <input
+                        type="search"
+                        id="global-city-search"
+                        placeholder="Rechercher une ville..."
+                        autocomplete="off">
+
+                    <button type="submit" class="search-button">
+                        <img src="images/search.svg" alt="Rechercher">
+                    </button>
+
                 </form>
+
             </div>
 
             <div class="settings">
@@ -49,5 +63,231 @@
             </div>
         </nav>
     </header>
+        
+
+
+    <main class="carte-page">
+
+
+    <!-- =========================
+         INTRODUCTION
+    ========================== -->
+
+    <section class="carte-intro">
+
+        <h2>Carte météo</h2>
+
+        <p>
+            Explorez les conditions météorologiques
+            sur la carte en temps réel.
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================
+         RECHERCHE D'UNE VILLE
+    ========================== -->
+
+    <section class="carte-search">
+
+        <form id="carte-search-form">
+
+            <input
+                type="search"
+                id="carte-city-search"
+                placeholder="Rechercher une ville..."
+                autocomplete="off"
+            >
+
+            <button type="submit">
+
+                <img
+                    src="images/search.svg"
+                    alt="Rechercher"
+                >
+
+            </button>
+
+        </form>
+
+    </section>
+
+
+
+    <!-- =========================
+         CARTE MÉTÉO
+    ========================== -->
+
+    <section class="carte-map-section">
+
+
+        <!-- FILTRES -->
+
+        <div class="carte-map-filters">
+
+            <button
+                class="carte-map-filter active"
+                data-layer="temperature"
+            >
+                Température
+            </button>
+
+            <button
+                class="carte-map-filter"
+                data-layer="precipitation"
+            >
+                Précipitations
+            </button>
+
+            <button
+                class="carte-map-filter"
+                data-layer="clouds"
+            >
+                Nuages
+            </button>
+
+            <button
+                class="carte-map-filter"
+                data-layer="wind"
+            >
+                Vent
+            </button>
+
+            <button
+                class="carte-map-filter"
+                data-layer="pressure"
+            >
+                Pression
+            </button>
+
+        </div>
+
+
+
+        <!-- GRANDE CARTE -->
+
+        <div
+            id="carte-weather-map"
+            class="carte-weather-map"
+        >
+        </div>
+
+
+
+        <!-- INFORMATIONS DE LA VILLE -->
+
+        <div class="carte-city-info">
+
+
+            <div class="carte-city-info-item">
+
+                <span>
+                    Ville sélectionnée
+                </span>
+
+                <strong id="carte-city">
+                    Angers
+                </strong>
+
+            </div>
+
+
+            <div class="carte-city-info-item">
+
+                <span>
+                    Température
+                </span>
+
+                <strong id="carte-temperature">
+                    -- °C
+                </strong>
+
+            </div>
+
+
+            <div class="carte-city-info-item">
+
+                <span>
+                    Conditions
+                </span>
+
+                <strong id="carte-description">
+                    --
+                </strong>
+
+            </div>
+
+
+            <div class="carte-city-info-item">
+
+                <span>
+                    Vent
+                </span>
+
+                <strong id="carte-wind">
+                    -- km/h
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================
+         LÉGENDE
+    ========================== -->
+
+    <section class="carte-legend-card">
+
+        <h3>Légende</h3>
+
+
+        <div class="carte-legend-content">
+
+            <span>
+                Froid
+            </span>
+
+            <div class="carte-legend-gradient"></div>
+
+            <span>
+                Chaud
+            </span>
+
+        </div>
+
+
+        <p>
+            Les couleurs permettent de visualiser
+            l'intensité du phénomène météorologique
+            sélectionné.
+        </p>
+
+    </section>
+
+
+
+    <!-- =========================
+         INFORMATION
+    ========================== -->
+
+    <section class="carte-info-card">
+
+        <p>
+            Sélectionnez une couche météo pour
+            visualiser les conditions correspondantes
+            sur la carte.
+        </p>
+
+    </section>
+
+
+</main>
     </body>
 </html>

@@ -35,11 +35,21 @@
             <div class="right-side">
 
             <div class="search">
-                <!--bare recherche-->
-                <form>
-                <input type="search" placeholder="Rechercher une ville...">
-                <img src="images/search.svg" alt="Rechercher">
+
+                <form id="global-search-form">
+
+                    <input
+                        type="search"
+                        id="global-city-search"
+                        placeholder="Rechercher une ville..."
+                        autocomplete="off">
+
+                    <button type="submit" class="search-button">
+                        <img src="images/search.svg" alt="Rechercher">
+                    </button>
+
                 </form>
+
             </div>
 
             <div class="settings">
