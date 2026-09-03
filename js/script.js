@@ -1,5 +1,5 @@
 let dataForecast;
-const API_KEY=""
+const API_KEY="705b965b7cd09737aa318ecc48fdf468"
 const ville =
     localStorage.getItem("villeActuelle") || "Angers";
 const url = `https://api.openweathermap.org/data/2.5/weather?q=${ville}&appid=${API_KEY}&units=metric&lang=fr`;
@@ -2432,3 +2432,1355 @@ boutonsCarte.forEach(function(bouton) {
 initialiserCarte();
 }
 
+// =====================================================
+// CARTE.HTML
+// =====================================================
+
+const carteMapElement =
+    document.getElementById("carte-weather-map");
+
+if (carteMapElement) {
+
+    const carteMapFilters =
+        document.querySelectorAll(
+            ".carte-map-filter"
+        );
+
+
+    // =========================
+    // VILLE ACTUELLE
+    // =========================
+
+    const villeCarte =
+        localStorage.getItem("villeActuelle") ||
+        localStorage.getItem("villeRecherchee") ||
+        "Angers";
+
+    
+    let carte = null;
+    let carteMarqueur = null;
+    // =========================
+    // RECHERCHE D'UNE VILLE
+    // =========================
+
+    const carteSearchForm =
+        document.getElementById("carte-search-form");
+
+    const carteCitySearch =
+        document.getElementById("carte-city-search");
+
+    // =========================
+    // INITIALISER LA CARTE
+    // =========================
+
+    async function initialiserCarteMeteo() {
+
+        try {
+
+            const data =
+                await getWeather(villeCarte);
+
+
+            // Coordonnées
+
+            const latitude =
+                data.coord.lat;
+
+            const longitude =
+                data.coord.lon;
+
+
+            // Créer la carte
+
+            carte =
+                L.map("carte-weather-map").setView(
+                    [latitude, longitude],
+                    8
+                );
+
+
+            // Fond OpenStreetMap
+
+            L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                    attribution:
+                        "&copy; OpenStreetMap contributors"
+                }
+            ).addTo(carte);
+
+
+            // =========================
+            // MARQUEUR
+            // =========================
+
+            carteMarqueur =
+                L.marker(
+                    [latitude, longitude]
+                ).addTo(carte);
+
+
+            carteMarqueur.bindPopup(
+                `<strong>${data.name}</strong>`
+            ).openPopup();
+
+
+            // =========================
+            // COUCHES MÉTÉO
+            // =========================
+
+            const temperatureLayer =
+                L.tileLayer(
+                    `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${API_KEY}`,
+                    {
+                        opacity: 0.9
+                    }
+                );
+
+
+            const precipitationLayer =
+                L.tileLayer(
+                    `https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${API_KEY}`,
+                    {
+                        opacity: 0.95
+                    }
+                );
+
+
+            const nuagesLayer =
+                L.tileLayer(
+                    `https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${API_KEY}`,
+                    {
+                        opacity: 0.8
+                    }
+                );
+
+
+            const ventLayer =
+                L.tileLayer(
+                    `https://tile.openweathermap.org/map/wind_new/{z}/{x}/{y}.png?appid=${API_KEY}`,
+                    {
+                        opacity: 0.95
+                    }
+                );
+
+
+            const pressionLayer =
+                L.tileLayer(
+                    `https://tile.openweathermap.org/map/pressure_new/{z}/{x}/{y}.png?appid=${API_KEY}`,
+                    {
+                        opacity: 0.85
+                    }
+                );
+
+
+            // Température affichée par défaut
+
+            temperatureLayer.addTo(carte);
+
+
+            // =========================
+            // INFORMATIONS DE LA VILLE
+            // =========================
+
+            document.getElementById(
+                "carte-city"
+            ).textContent =
+                data.name;
+
+
+            document.getElementById(
+                "carte-temperature"
+            ).textContent =
+                Math.round(data.main.temp) + "°C";
+
+
+            document.getElementById(
+                "carte-description"
+            ).textContent =
+                data.weather[0].description;
+
+
+            document.getElementById(
+                "carte-wind"
+            ).textContent =
+                (data.wind.speed * 3.6).toFixed(1)
+                + " km/h";
+
+
+            // =========================
+            // CHANGEMENT DE COUCHE
+            // =========================
+
+            carteMapFilters.forEach(
+                function(bouton) {
+
+                    bouton.addEventListener(
+                        "click",
+                        function() {
+
+                            // Retirer toutes les couches
+
+                            carte.removeLayer(
+                                temperatureLayer
+                            );
+
+                            carte.removeLayer(
+                                precipitationLayer
+                            );
+
+                            carte.removeLayer(
+                                nuagesLayer
+                            );
+
+                            carte.removeLayer(
+                                ventLayer
+                            );
+
+                            carte.removeLayer(
+                                pressionLayer
+                            );
+
+
+                            // Retirer active
+
+                            carteMapFilters.forEach(
+                                function(b) {
+
+                                    b.classList.remove(
+                                        "active"
+                                    );
+
+                                }
+                            );
+
+
+                            // Activer le bouton
+
+                            bouton.classList.add(
+                                "active"
+                            );
+
+
+                            // Ajouter la couche choisie
+
+                            const layer =
+                                bouton.dataset.layer;
+
+
+                            if (
+                                layer ===
+                                "temperature"
+                            ) {
+
+                                temperatureLayer.addTo(
+                                    carte
+                                );
+
+                            }
+
+                            else if (
+                                layer ===
+                                "precipitation"
+                            ) {
+
+                                precipitationLayer.addTo(
+                                    carte
+                                );
+
+                            }
+
+                            else if (
+                                layer ===
+                                "clouds"
+                            ) {
+
+                                nuagesLayer.addTo(
+                                    carte
+                                );
+
+                            }
+
+                            else if (
+                                layer ===
+                                "wind"
+                            ) {
+
+                                ventLayer.addTo(
+                                    carte
+                                );
+
+                            }
+
+                            else if (
+                                layer ===
+                                "pressure"
+                            ) {
+
+                                pressionLayer.addTo(
+                                    carte
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
+
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Erreur lors de l'initialisation de la carte :",
+                error
+            );
+
+        }
+
+    }
+
+
+    // Lancer la carte
+
+    // Lancer la carte
+
+initialiserCarteMeteo();
+
+
+// =====================================================
+// RECHERCHE D'UNE VILLE SUR LA CARTE
+// =====================================================
+
+if (carteSearchForm && carteCitySearch) {
+
+    carteSearchForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const villeRecherchee =
+                carteCitySearch.value.trim();
+
+            if (villeRecherchee === "") {
+                return;
+            }
+
+            try {
+
+                // Récupérer la météo de la ville recherchée
+                const data =
+                    await getWeather(villeRecherchee);
+
+                // Vérifier si la ville existe
+                if (data.cod !== 200) {
+
+                    alert("Ville introuvable.");
+
+                    return;
+                }
+
+
+                // Sauvegarder la ville
+                localStorage.setItem(
+                    "villeActuelle",
+                    data.name
+                );
+
+                localStorage.setItem(
+                    "villeRecherchee",
+                    data.name
+                );
+
+
+                // Récupérer les coordonnées
+                const latitude =
+                    data.coord.lat;
+
+                const longitude =
+                    data.coord.lon;
+
+
+                // Déplacer la carte
+                carte.setView(
+                    [latitude, longitude],
+                    8
+                );
+
+
+                // Supprimer l'ancien marqueur
+                if (carteMarqueur) {
+
+                    carte.removeLayer(
+                        carteMarqueur
+                    );
+
+                }
+
+
+                // Créer le nouveau marqueur
+                carteMarqueur =
+                    L.marker(
+                        [latitude, longitude]
+                    ).addTo(carte);
+
+
+                carteMarqueur.bindPopup(
+                    `<strong>${data.name}</strong>`
+                ).openPopup();
+
+
+                // Mettre à jour les informations
+                document.getElementById(
+                    "carte-city"
+                ).textContent =
+                    data.name;
+
+
+                document.getElementById(
+                    "carte-temperature"
+                ).textContent =
+                    Math.round(data.main.temp) + "°C";
+
+
+                document.getElementById(
+                    "carte-description"
+                ).textContent =
+                    data.weather[0].description;
+
+
+                document.getElementById(
+                    "carte-wind"
+                ).textContent =
+                    (
+                        data.wind.speed * 3.6
+                    ).toFixed(1) + " km/h";
+
+
+                // Vider la barre de recherche
+                carteCitySearch.value = "";
+
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur lors de la recherche de la ville :",
+                    error
+                );
+
+                alert(
+                    "Une erreur est survenue lors de la recherche."
+                );
+
+            }
+
+        }
+    );
+
+}
+
+}
+
+
+// =====================================================
+// PAGE FAVORIS
+// =====================================================
+
+const favorisPage =
+    document.querySelector(".favoris-page");
+
+if (favorisPage) {
+
+    // =====================================================
+    // ÉLÉMENTS HTML
+    // =====================================================
+
+    const favoritesContainer =
+        document.getElementById("favorites-container");
+
+    const favoritesEmpty =
+        document.getElementById("favorites-empty");
+
+    const addCityButton =
+        document.getElementById("add-city-button");
+
+    const addCityCard =
+        document.getElementById("add-city-card");
+
+    const emptyAddCityButton =
+        document.getElementById("empty-add-city-button");
+
+    const favorisSearchSection =
+        document.getElementById("favoris-search-section");
+
+    const favorisSearchForm =
+        document.getElementById("favoris-search-form");
+
+    const favorisCitySearch =
+        document.getElementById("favoris-city-search");
+
+
+    // =====================================================
+    // RÉCUPÉRER LES FAVORIS
+    // =====================================================
+
+    function obtenirFavoris() {
+
+        const favoris =
+            localStorage.getItem("weatherFavorites");
+
+        if (!favoris) {
+            return [];
+        }
+
+        try {
+
+            return JSON.parse(favoris);
+
+        } catch (error) {
+
+            console.error(
+                "Erreur lors de la lecture des favoris :",
+                error
+            );
+
+            return [];
+        }
+    }
+
+
+    // =====================================================
+    // SAUVEGARDER LES FAVORIS
+    // =====================================================
+
+    function sauvegarderFavoris(favoris) {
+
+        localStorage.setItem(
+            "weatherFavorites",
+            JSON.stringify(favoris)
+        );
+
+    }
+
+
+    // =====================================================
+    // AFFICHER / CACHER LA RECHERCHE
+    // =====================================================
+
+    function afficherRechercheFavoris() {
+
+        if (!favorisSearchSection) {
+            return;
+        }
+
+        favorisSearchSection.classList.remove("hidden");
+
+        if (favorisCitySearch) {
+            favorisCitySearch.focus();
+        }
+
+    }
+
+
+    // =====================================================
+    // BOUTONS "AJOUTER UNE VILLE"
+    // =====================================================
+
+    if (addCityButton) {
+
+        addCityButton.addEventListener(
+            "click",
+            function() {
+
+                afficherRechercheFavoris();
+
+            }
+        );
+
+    }
+
+
+    if (addCityCard) {
+
+        addCityCard.addEventListener(
+            "click",
+            function() {
+
+                afficherRechercheFavoris();
+
+            }
+        );
+
+    }
+
+
+    if (emptyAddCityButton) {
+
+        emptyAddCityButton.addEventListener(
+            "click",
+            function() {
+
+                afficherRechercheFavoris();
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // AJOUTER UNE VILLE AUX FAVORIS
+    // =====================================================
+
+    function ajouterFavori(data) {
+
+        const favoris =
+            obtenirFavoris();
+
+
+        // Vérifier si la ville existe déjà
+
+        const dejaFavorite =
+            favoris.some(
+                function(favori) {
+
+                    return (
+                        favori.name.toLowerCase() ===
+                        data.name.toLowerCase()
+                    );
+
+                }
+            );
+
+
+        if (dejaFavorite) {
+
+            alert(
+                data.name + " est déjà dans vos favoris."
+            );
+
+            return;
+
+        }
+
+
+        // Créer l'objet de la ville
+
+        const nouveauFavori = {
+
+            name: data.name,
+
+            country: data.sys.country,
+
+            latitude: data.coord.lat,
+
+            longitude: data.coord.lon
+
+        };
+
+
+        favoris.push(
+            nouveauFavori
+        );
+
+
+        sauvegarderFavoris(
+            favoris
+        );
+
+
+        // Réafficher les cartes
+
+        afficherFavoris();
+
+    }
+
+
+    // =====================================================
+    // SUPPRIMER UNE VILLE DES FAVORIS
+    // =====================================================
+
+    function supprimerFavori(nomVille) {
+
+        let favoris =
+            obtenirFavoris();
+
+
+        favoris =
+            favoris.filter(
+                function(favori) {
+
+                    return (
+                        favori.name.toLowerCase() !==
+                        nomVille.toLowerCase()
+                    );
+
+                }
+            );
+
+
+        sauvegarderFavoris(
+            favoris
+        );
+
+
+        afficherFavoris();
+
+    }
+
+
+    // =====================================================
+    // CRÉER UNE CARTE FAVORI
+    // =====================================================
+
+    async function creerCarteFavori(favori) {
+
+        try {
+
+            // Récupérer la météo actuelle
+
+            const data =
+                await getWeather(
+                    favori.name
+                );
+
+
+            if (data.cod !== 200) {
+                return;
+            }
+
+
+            const card =
+                document.createElement("article");
+
+
+            card.classList.add(
+                "favorite-card"
+            );
+
+
+            // -------------------------------------------------
+            // DONNÉES MÉTÉO
+            // -------------------------------------------------
+
+            const temperature =
+                Math.round(
+                    data.main.temp
+                );
+
+
+            const temperatureMin =
+                Math.round(
+                    data.main.temp_min
+                );
+
+
+            const temperatureMax =
+                Math.round(
+                    data.main.temp_max
+                );
+
+
+            const vent =
+                (
+                    data.wind.speed * 3.6
+                ).toFixed(1);
+
+
+            const humidite =
+                data.main.humidity;
+
+
+            const description =
+                data.weather[0].description;
+
+
+            const weather =
+                data.weather[0].main;
+
+
+            const icon =
+                getWeatherIcon(
+                    weather,
+                    data.weather[0].icon
+                );
+
+
+            const pays =
+                obtenirNomPays(
+                    data.sys.country
+                );
+
+
+            // -------------------------------------------------
+            // CONTENU DE LA CARTE
+            // -------------------------------------------------
+
+            card.innerHTML = `
+
+                <div class="favorite-card-header">
+
+                    <div>
+
+                        <h3>
+                            ${data.name}
+                        </h3>
+
+                        <span class="favorite-country">
+                            ${pays}
+                        </span>
+
+                    </div>
+
+
+                    <div class="favorite-card-actions">
+
+                        <button
+                            type="button"
+                            class="favorite-remove"
+                            aria-label="Retirer ${data.name} des favoris"
+                        >
+                            ♥
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="favorite-card-weather">
+
+                    <img
+                        class="favorite-weather-icon"
+                        src="${icon}"
+                        alt="${description}"
+                    >
+
+
+                    <div class="favorite-temperature">
+
+                        <strong>
+                            ${temperature}°C
+                        </strong>
+
+                        <span>
+                            ${description}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="favorite-card-details">
+
+                    <span>
+                        ${temperatureMin}°C /
+                        ${temperatureMax}°C
+                    </span>
+
+                    <span>
+                        ${vent} km/h
+                    </span>
+
+                    <span>
+                        ${humidite}%
+                    </span>
+
+                </div>
+
+            `;
+
+
+            // =================================================
+            // BOUTON SUPPRIMER
+            // =================================================
+
+            const removeButton =
+                card.querySelector(
+                    ".favorite-remove"
+                );
+
+
+            removeButton.addEventListener(
+                "click",
+                function(event) {
+
+                    // Empêcher l'ouverture des prévisions
+
+                    event.stopPropagation();
+
+
+                    supprimerFavori(
+                        data.name
+                    );
+
+                }
+            );
+
+
+            // =================================================
+            // CLIQUER SUR LA CARTE
+            // =================================================
+
+            card.addEventListener(
+                "click",
+                function() {
+
+                    localStorage.setItem(
+                        "villeActuelle",
+                        data.name
+                    );
+
+
+                    localStorage.setItem(
+                        "villeRecherchee",
+                        data.name
+                    );
+
+
+                    window.location.href =
+                        "previsions.html";
+
+                }
+            );
+
+
+            return card;
+
+
+        } catch (error) {
+
+            console.error(
+                "Erreur lors de la création de la carte :",
+                error
+            );
+
+            return null;
+
+        }
+
+    }
+
+
+    // =====================================================
+    // AFFICHER TOUS LES FAVORIS
+    // =====================================================
+
+    async function afficherFavoris() {
+
+        if (!favoritesContainer) {
+            return;
+        }
+
+
+        const favoris =
+            obtenirFavoris();
+
+
+        // Vider les anciennes cartes
+
+        favoritesContainer
+            .querySelectorAll(".favorite-card")
+            .forEach(function(card) {
+            card.remove();
+    });
+
+
+        // =================================================
+        // AUCUN FAVORI
+        // =================================================
+
+        if (favoris.length === 0) {
+
+            favoritesEmpty.classList.remove(
+                "hidden"
+            );
+
+
+            if (addCityCard) {
+
+                addCityCard.classList.add(
+                    "hidden"
+                );
+
+            }
+
+
+            return;
+
+        }
+
+
+        // =================================================
+        // AU MOINS UN FAVORI
+        // =================================================
+
+        favoritesEmpty.classList.add(
+            "hidden"
+        );
+
+
+        if (addCityCard) {
+
+            addCityCard.classList.remove(
+                "hidden"
+            );
+
+        }
+
+
+        // =================================================
+        // CRÉER LES CARTES
+        // =================================================
+
+        for (const favori of favoris) {
+
+            const card =
+                await creerCarteFavori(
+                    favori
+                );
+
+
+            if (card) {
+
+                favoritesContainer.appendChild(
+                    card
+                );
+
+            }
+
+        }
+
+    }
+
+
+    // =====================================================
+    // RECHERCHER UNE VILLE DEPUIS FAVORIS
+    // =====================================================
+
+    if (
+        favorisSearchForm &&
+        favorisCitySearch
+    ) {
+
+        favorisSearchForm.addEventListener(
+            "submit",
+            async function(event) {
+
+                event.preventDefault();
+
+
+                const ville =
+                    favorisCitySearch.value.trim();
+
+
+                if (ville === "") {
+                    return;
+                }
+
+
+                try {
+
+                    // Rechercher la ville avec OpenWeather
+
+                    const data =
+                        await getWeather(
+                            ville
+                        );
+
+
+                    // Vérifier si la ville existe
+
+                    if (
+                        data.cod !== 200
+                    ) {
+
+                        alert(
+                            "Ville introuvable."
+                        );
+
+                        return;
+
+                    }
+
+
+                    // Ajouter automatiquement
+                    // la ville aux favoris
+
+                    ajouterFavori(
+                        data
+                    );
+
+
+                    // Vider la recherche
+
+                    favorisCitySearch.value = "";
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Erreur lors de la recherche :",
+                        error
+                    );
+
+
+                    alert(
+                        "Une erreur est survenue lors de la recherche."
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // AFFICHER LES FAVORIS AU CHARGEMENT
+    // =====================================================
+
+    afficherFavoris();
+
+}
+
+// =====================================================
+// BOUTON FAVORI - PAGE PRÉVISIONS
+// =====================================================
+
+const previsionFavoriteButton =
+    document.getElementById("prevision-favorite-button");
+
+if (previsionFavoriteButton) {
+
+    const previsionFavoriteIcon =
+        document.getElementById("prevision-favorite-icon");
+
+    const previsionFavoriteText =
+        document.getElementById("prevision-favorite-text");
+
+
+    // =====================================================
+    // RÉCUPÉRER LES FAVORIS
+    // =====================================================
+
+    function obtenirFavorisPrevision() {
+
+        const favoris =
+            localStorage.getItem("weatherFavorites");
+
+        if (!favoris) {
+            return [];
+        }
+
+        try {
+
+            return JSON.parse(favoris);
+
+        } catch (error) {
+
+            console.error(
+                "Erreur lors de la lecture des favoris :",
+                error
+            );
+
+            return [];
+        }
+    }
+
+
+    // =====================================================
+    // SAUVEGARDER LES FAVORIS
+    // =====================================================
+
+    function sauvegarderFavorisPrevision(favoris) {
+
+        localStorage.setItem(
+            "weatherFavorites",
+            JSON.stringify(favoris)
+        );
+
+    }
+
+
+    // =====================================================
+    // METTRE À JOUR L'AFFICHAGE DU BOUTON
+    // =====================================================
+
+    function mettreAJourBoutonFavori() {
+
+        const ville =
+            localStorage.getItem("villeRecherchee") ||
+            "Angers";
+
+
+        const favoris =
+            obtenirFavorisPrevision();
+
+
+        const estFavorite =
+            favoris.some(
+                function(favori) {
+
+                    return (
+                        favori.name.toLowerCase() ===
+                        ville.toLowerCase()
+                    );
+
+                }
+            );
+
+
+        if (estFavorite) {
+
+            previsionFavoriteIcon.textContent = "♥";
+
+            previsionFavoriteText.textContent =
+                "Dans vos favoris";
+
+        } else {
+
+            previsionFavoriteIcon.textContent = "♡";
+
+            previsionFavoriteText.textContent =
+                "Ajouter aux favoris";
+
+        }
+
+    }
+
+
+    // =====================================================
+    // CLIQUER SUR LE BOUTON
+    // =====================================================
+
+    previsionFavoriteButton.addEventListener(
+        "click",
+        async function() {
+
+            const ville =
+                localStorage.getItem("villeRecherchee") ||
+                "Angers";
+
+
+            try {
+
+                // Récupérer les données de la ville
+
+                const data =
+                    await getWeather(ville);
+
+
+                if (data.cod !== 200) {
+
+                    alert(
+                        "Impossible de récupérer cette ville."
+                    );
+
+                    return;
+
+                }
+
+
+                let favoris =
+                    obtenirFavorisPrevision();
+
+
+                const index =
+                    favoris.findIndex(
+                        function(favori) {
+
+                            return (
+                                favori.name.toLowerCase() ===
+                                data.name.toLowerCase()
+                            );
+
+                        }
+                    );
+
+
+                // =================================================
+                // SI LA VILLE EST DÉJÀ FAVORITE → SUPPRIMER
+                // =================================================
+
+                if (index !== -1) {
+
+                    favoris.splice(
+                        index,
+                        1
+                    );
+
+
+                    sauvegarderFavorisPrevision(
+                        favoris
+                    );
+
+
+                }
+
+                // =================================================
+                // SINON → AJOUTER
+                // =================================================
+
+                else {
+
+                    const nouveauFavori = {
+
+                        name: data.name,
+
+                        country: data.sys.country,
+
+                        latitude: data.coord.lat,
+
+                        longitude: data.coord.lon
+
+                    };
+
+
+                    favoris.push(
+                        nouveauFavori
+                    );
+
+
+                    sauvegarderFavorisPrevision(
+                        favoris
+                    );
+
+                }
+
+
+                // Mettre à jour le bouton
+
+                mettreAJourBoutonFavori();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur lors de la gestion du favori :",
+                    error
+                );
+
+                alert(
+                    "Une erreur est survenue."
+                );
+
+            }
+
+        }
+    );
+
+
+    // =====================================================
+    // INITIALISER LE BOUTON
+    // =====================================================
+
+    mettreAJourBoutonFavori();
+
+}

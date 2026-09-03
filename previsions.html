@@ -73,30 +73,51 @@
 
     <section class="prevision-hero">
 
-        <!-- Localisation + bouton -->
 
-        <div class="prevision-hero-header">
 
-            <div class="prevision-location">
+    <!-- Localisation + boutons -->
 
-                <span>PRÉVISIONS POUR</span>
+    <div class="prevision-hero-header">
 
-                <h2 id="prevision-city">
-                    Angers, France
-                </h2>
+        <div class="prevision-location">
 
-                <p id="prevision-coordinates">
-                    47.47° N · 0.55° O
-                </p>
+            <span>PRÉVISIONS POUR</span>
 
-            </div>
+            <h2 id="prevision-city">
+                Angers, France
+            </h2>
 
-            <button id="prevision-location-button">
+            <p id="prevision-coordinates">
+                47.47° N · 0.55° O
+            </p>
+
+        </div>
+
+        <div class="prevision-hero-actions">
+
+            <!-- NOUVEAU bouton favoris -->
+            <button
+                id="prevision-favorite-button"
+                type="button"
+            >
+                <span id="prevision-favorite-icon">♡</span>
+
+                <span id="prevision-favorite-text">
+                    Ajouter aux favoris
+                </span>
+            </button>
+
+            <!-- ANCIEN bouton : NE PAS MODIFIER -->
+            <button
+                id="prevision-location-button"
+                type="button"
+            >
                 Ma position actuelle
             </button>
 
         </div>
 
+    </div>
 
         <!-- =========================
              MÉTÉO + ÉVOLUTION

@@ -59,5 +59,248 @@
             </div>
         </nav>
     </header>
+
+    <main class="favoris-page">
+
+
+        <!-- =================================================
+             INTRODUCTION
+        ================================================== -->
+
+        <section class="favoris-intro">
+
+
+            <div class="favoris-intro-text">
+
+                <h2>
+                    Mes villes favorites
+                </h2>
+
+                <p>
+                    Retrouvez rapidement la météo de vos villes préférées.
+                </p>
+
+            </div>
+
+
+            <!-- BOUTON AJOUTER UNE VILLE -->
+
+            <button
+                id="add-city-button"
+                class="add-city-button"
+                type="button"
+            >
+
+                <span class="add-city-icon">
+                    +
+                </span>
+
+                <span>
+                    Ajouter une ville
+                </span>
+
+            </button>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             RECHERCHE D'UNE VILLE
+             Cachée au départ.
+             Elle apparaît lorsqu'on clique sur
+             "Ajouter une ville".
+        ================================================== -->
+
+        <section
+            id="favoris-search-section"
+            class="favoris-search-section hidden"
+        >
+
+            <form
+                id="favoris-search-form"
+                class="favoris-search-form"
+            >
+
+                <input
+                    type="search"
+                    id="favoris-city-search"
+                    placeholder="Rechercher une ville..."
+                    autocomplete="off"
+                >
+
+                <button
+                    type="submit"
+                    aria-label="Rechercher une ville"
+                >
+
+                    <img
+                        src="images/search.svg"
+                        alt="Rechercher"
+                    >
+
+                </button>
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =================================================
+             GRILLE DES FAVORIS
+             
+             JavaScript créera les cartes ici.
+        ================================================== -->
+<section
+    id="favorites-container"
+    class="favorites-container"
+>
+
+    <!-- Les cartes favorites seront créées par JavaScript -->
+
+    <button
+        id="add-city-card"
+        class="add-city-card"
+        type="button"
+    >
+
+        <span class="add-city-card-icon">
+            +
+        </span>
+
+        <strong>
+            Ajouter une ville
+        </strong>
+
+        <span>
+            Cliquez pour ajouter
+            <br>
+            une nouvelle ville
+        </span>
+
+    </button>
+
+</section>
+
+
+
+        <!-- =================================================
+             ÉTAT VIDE
+             
+             Affiché uniquement lorsqu'il n'y a
+             aucun favori.
+        ================================================== -->
+
+        <section
+            id="favorites-empty"
+            class="favorites-empty"
+        >
+
+            <div class="favorites-empty-icon">
+                ☆
+            </div>
+
+            <h3>
+                Aucune ville favorite
+            </h3>
+
+            <p>
+                Ajoutez vos villes préférées pour retrouver
+                rapidement leur météo.
+            </p>
+
+            <button
+                id="empty-add-city-button"
+                class="add-city-button"
+                type="button"
+            >
+
+                <span class="add-city-icon">
+                    +
+                </span>
+
+                <span>
+                    Ajouter une ville
+                </span>
+
+            </button>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <div class="footer-content">
+
+
+            <!-- LOGO FOOTER -->
+
+            <a
+                href="index.html"
+                class="footer-logo"
+            >
+
+                <img
+                    src="images/logo.png"
+                    alt="Logo WeatherScope"
+                >
+
+                <span>
+                    WeatherScope
+                </span>
+
+            </a>
+
+
+            <!-- COPYRIGHT -->
+
+            <p class="footer-copyright">
+                © 2025 WeatherScope. Tous droits réservés.
+            </p>
+
+
+            <!-- LIENS -->
+
+            <div class="footer-links">
+
+                <a href="#">
+                    Conditions d'utilisation
+                </a>
+
+                <a href="#">
+                    Confidentialité
+                </a>
+
+                <a href="#">
+                    Contact
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="js/script.js"></script>
+
+
 </body>
+
 </html>

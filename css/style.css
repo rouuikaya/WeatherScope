@@ -2355,3 +2355,670 @@ main{
     }
 
 }
+
+/* =====================================================
+   PAGE FAVORIS
+===================================================== */
+
+.favoris-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 55px 45px 80px;
+}
+
+
+/* =====================================================
+   INTRODUCTION
+===================================================== */
+
+.favoris-intro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.favoris-intro-text h2 {
+    margin: 0 0 10px;
+    font-size: 34px;
+    font-weight: 700;
+}
+
+.favoris-intro-text p {
+    margin: 0;
+    font-size: 16px;
+    opacity: 0.7;
+}
+
+
+/* =====================================================
+   BOUTON AJOUTER UNE VILLE
+===================================================== */
+
+.add-city-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    padding: 13px 21px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: #3b82f6;
+    color: white;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.add-city-button:hover {
+    transform: translateY(-2px);
+    opacity: 0.95;
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.25);
+}
+
+.add-city-icon {
+    font-size: 21px;
+    line-height: 1;
+}
+
+
+/* =====================================================
+   RECHERCHE FAVORIS
+===================================================== */
+
+.favoris-search-section {
+    margin-bottom: 30px;
+}
+
+.favoris-search-form {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+
+    border-radius: 12px;
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.favoris-search-form input {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 15px 18px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+    color: inherit;
+
+    font-size: 15px;
+}
+
+.favoris-search-form input::placeholder {
+    opacity: 0.5;
+}
+
+.favoris-search-form button {
+    width: 55px;
+
+    border: none;
+
+    background: #3b82f6;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+}
+
+.favoris-search-form button img {
+    width: 20px;
+    height: 20px;
+}
+
+
+/* =====================================================
+   GRILLE DES FAVORIS
+===================================================== */
+
+.favorites-container {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 24px;
+
+    width: 100%;
+}
+
+
+/* =====================================================
+   CARTE D'UNE VILLE FAVORITE
+===================================================== */
+
+.favorite-card {
+    position: relative;
+
+    min-height: 270px;
+
+    padding: 26px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 51, 105, 0.95),
+            rgba(19, 31, 68, 0.98)
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.18);
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.favorite-card:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 18px 38px rgba(0, 0, 0, 0.25);
+
+    border-color:
+        rgba(59, 130, 246, 0.45);
+}
+
+
+/* =====================================================
+   HEADER DE LA CARTE
+===================================================== */
+
+.favorite-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+.favorite-card-header h3 {
+    margin: 0 0 5px;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.favorite-country {
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+
+/* =====================================================
+   ACTION FAVORI
+===================================================== */
+
+.favorite-card-actions {
+    display: flex;
+    align-items: center;
+}
+
+.favorite-remove {
+    width: 38px;
+    height: 38px;
+
+    border: none;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: white;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.favorite-remove:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.08);
+}
+
+
+/* =====================================================
+   MÉTÉO PRINCIPALE
+===================================================== */
+
+.favorite-card-weather {
+    display: flex;
+    align-items: center;
+
+    gap: 18px;
+
+    margin-top: 28px;
+}
+
+.favorite-weather-icon {
+    width: 78px;
+    height: 78px;
+
+    object-fit: contain;
+}
+
+.favorite-temperature {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.favorite-temperature strong {
+    font-size: 42px;
+    line-height: 1;
+}
+
+.favorite-temperature span {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+
+/* =====================================================
+   DÉTAILS
+===================================================== */
+
+.favorite-card-details {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin-top: 28px;
+
+    padding-top: 18px;
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.1);
+}
+
+.favorite-card-details span {
+    font-size: 13px;
+    opacity: 0.75;
+}
+
+
+/* =====================================================
+   CARTE AJOUTER UNE VILLE
+===================================================== */
+
+.add-city-card {
+    min-height: 270px;
+
+    padding: 30px;
+
+    border-radius: 18px;
+
+    border:
+        2px dashed rgba(255, 255, 255, 0.18);
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color: inherit;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.add-city-card:hover {
+    background:
+        rgba(59, 130, 246, 0.08);
+
+    border-color:
+        rgba(59, 130, 246, 0.5);
+
+    transform: translateY(-4px);
+}
+
+.add-city-card-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(59, 130, 246, 0.12);
+
+    color: #3b82f6;
+
+    font-size: 30px;
+
+    margin-bottom: 8px;
+}
+
+.add-city-card strong {
+    font-size: 17px;
+}
+
+.add-city-card span:last-child {
+    text-align: center;
+
+    font-size: 13px;
+
+    opacity: 0.55;
+
+    line-height: 1.5;
+}
+
+
+/* =====================================================
+   ÉTAT VIDE
+===================================================== */
+
+.favorites-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    min-height: 360px;
+
+    padding: 50px 20px;
+}
+
+.favorites-empty-icon {
+    width: 75px;
+    height: 75px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        rgba(59, 130, 246, 0.1);
+
+    color: #3b82f6;
+
+    font-size: 40px;
+
+    margin-bottom: 20px;
+}
+
+.favorites-empty h3 {
+    margin: 0 0 10px;
+
+    font-size: 24px;
+}
+
+.favorites-empty p {
+    max-width: 450px;
+
+    margin: 0 0 25px;
+
+    font-size: 15px;
+
+    line-height: 1.6;
+
+    opacity: 0.65;
+}
+
+
+/* =====================================================
+   CLASSE CACHÉE
+===================================================== */
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer {
+    margin-top: 30px;
+
+    padding: 35px 45px;
+
+    background:
+        rgba(4, 10, 28, 0.75);
+
+    border-top:
+        1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    color: inherit;
+    text-decoration: none;
+
+    font-weight: 700;
+}
+
+.footer-logo img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.footer-copyright {
+    margin: 0;
+
+    font-size: 13px;
+
+    opacity: 0.5;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-links a {
+    color: inherit;
+    text-decoration: none;
+
+    font-size: 13px;
+
+    opacity: 0.55;
+
+    transition: opacity 0.2s ease;
+}
+
+.footer-links a:hover {
+    opacity: 1;
+}
+
+
+/* =====================================================
+   RESPONSIVE — TABLETTE
+===================================================== */
+
+@media (max-width: 1000px) {
+
+    .favoris-page {
+        padding:
+            45px 30px 65px;
+    }
+
+    .favorites-container {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+}
+
+
+/* =====================================================
+   RESPONSIVE — MOBILE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .favoris-page {
+        padding:
+            35px 18px 50px;
+    }
+
+    .favoris-intro {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .favoris-intro-text h2 {
+        font-size: 28px;
+    }
+
+    .add-city-button {
+        width: 100%;
+    }
+
+    .favorites-container {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .favorite-card {
+        min-height: 250px;
+        padding: 22px;
+    }
+
+    .favorite-temperature strong {
+        font-size: 36px;
+    }
+
+    .favorite-card-details {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+    .add-city-card {
+        min-height: 220px;
+    }
+
+    .footer {
+        padding:
+            30px 18px;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+}
+
+/* =====================================================
+   BOUTON FAVORI - PAGE PRÉVISIONS
+   ===================================================== */
+
+.prevision-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#prevision-favorite-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 11px 18px;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+#prevision-favorite-button:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
+
+#prevision-favorite-icon {
+    font-size: 20px;
+    line-height: 1;
+}
