@@ -1,8 +1,9 @@
 let dataForecast;
-const API_KEY="705b965b7cd09737aa318ecc48fdf468"
+const API_KEY="";
+const CARTO_APIKEY ="";
 const ville =
     localStorage.getItem("villeActuelle") || "Angers";
-const url = `https://api.openweathermap.org/data/2.5/weather?q=${ville}&appid=${API_KEY}&units=metric&lang=fr`;
+const url = `http://127.0.0.1:8000/weather?city=${encodeURIComponent(ville)}`;
 
 const temperatureElement =
     document.getElementById("temperature");
@@ -11,20 +12,20 @@ fetch(url)
         .then(response => response.json())
         .then(data => {console.log(data)
         document.getElementById("temperature").textContent =
-            data.main.temp +"°C" ; 
+            data.main.temp +"°C" ;
         document.getElementById("humidity").textContent =
-            data.main.humidity + "%";  
+            data.main.humidity + "%";
         document.getElementById("wind").textContent =
-            (data.wind.speed * 3.6).toFixed(1) + " Km/h" ; 
+            (data.wind.speed * 3.6).toFixed(1) + " Km/h" ;
         document.getElementById("pressure").textContent =
-            data.main.pressure +" hPa" ; 
+            data.main.pressure +" hPa" ;
         document.getElementById("feels-like").textContent=
-            data.main.feels_like + "°C" ; 
+            data.main.feels_like + "°C" ;
         document.getElementById("description").textContent  =
-            data.weather[0].description ;  
+            data.weather[0].description ;
         document.getElementById("city").textContent =
-            data.name ; 
-        const weather = 
+            data.name ;
+        const weather =
             data.weather[0].main;
         const heroLeft = document.querySelector(".hero-left");
 
@@ -60,24 +61,24 @@ if (heroLeft) {
             "url('images/background/clouds.jpg')";
     }
 }
-        
+
 
         const weatherIcon = getWeatherIcon(
     weather,
     data.weather[0].icon
         );
-        
-    
+
+
         // Afficher l'icône choisie sur la page
         document.getElementById("weather_icon").src =
             weatherIcon;
-        
+
         // Convertir le timestamp de l'API en date et heure lisibles
         const date = new Date(data.dt*1000);
 
         // Afficher la date et l'heure au format français
         document.getElementById("datetime").textContent =
-            date.toLocaleString("fr-FR") ; 
+            date.toLocaleString("fr-FR") ;
 /*
         const maintenant = data.dt;
 const lever = data.sys.sunrise;
@@ -90,7 +91,7 @@ console.log("Coucher :", new Date(coucher * 1000).toLocaleTimeString("fr-FR"));
 console.log("Est-ce la nuit ?", estNuit);
 */
         afficherMeteoAccueil(data);
-    
+
         });
     }
 
@@ -178,10 +179,9 @@ const grandesVilles = [
 
 // Récupérer les données météo d'une ville depuis l'API
 async function getWeather(city) {
-
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric&lang=fr`;
-
-    const response = await fetch(url);
+    const response = await fetch(
+        `http://127.0.0.1:8000/weather?city=${encodeURIComponent(city)}`
+    );
 
     const data = await response.json();
 
@@ -313,7 +313,7 @@ function afficherMeteoAccueil(data) {
 
     initialiserCarteAccueil(data);
 
-    
+
 }
 
 
@@ -336,12 +336,13 @@ function initialiserCarteAccueil(data) {
             );
 
         L.tileLayer(
-            "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            {
-                attribution:
-                    "&copy; OpenStreetMap contributors"
-            }
-        ).addTo(accueilMap);
+    `https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${CARTO_API_KEY}`,
+    {
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution/">CARTO</a>',
+        maxZoom: 20
+    }
+).addTo(accueilMap);
 
         L.tileLayer(
             `https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid=${API_KEY}`,
@@ -438,10 +439,9 @@ afficherVilles();
 }
 // Récupérer les prévisions météo d'une ville depuis l'API
 async function getForecast(city) {
-
-    const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric&lang=fr`;
-
-    const response = await fetch(url);
+    const response = await fetch(
+        `http://127.0.0.1:8000/forecast?city=${encodeURIComponent(city)}`
+    );
 
     const data = await response.json();
 
@@ -456,8 +456,14 @@ if (hourlyForecast) {
 // Récupérer et afficher les prévisions météo des prochaines heures
 async function afficherPrevisions() {
 
-    const data = await getForecast(ville);
+    const data = await getForecast(
+    localStorage.getItem("villeActuelle") || "Angers"
+);
 
+const pays = obtenirNomPays(data.city.country);
+
+document.getElementById("forecast-city").textContent =
+    data.city.name + ", " + pays;
     hourlyForecast.innerHTML = "";
 
     for (let i = 0; i < 8; i++) {
@@ -503,9 +509,16 @@ const dailyForecast =
 if (dailyForecast && hourlyForecast){
 async function afficherPrevisionsJours() {
 
-    const data = await getForecast(ville);
+    const data = await getForecast(
+    localStorage.getItem("villeActuelle") || "Angers"
+);
 
     dataForecast = data;
+
+    afficherDetailsJourAccueil(
+    data.list[0].dt_txt.split(" ")[0]
+);
+
 
     dailyForecast.innerHTML = "";
 
@@ -558,7 +571,7 @@ boutonsJours.forEach(function(bouton, index) {
         bouton.classList.add("active");
 
         afficherPrevisionsHoraires(date);
-        afficherDetailsJour(date);
+        afficherDetailsJourAccueil(date);
     });
 });
 
@@ -597,7 +610,7 @@ boutonsJours.forEach(function(bouton, index) {
             }
         }
 
-        
+
         const weather = forecastMidi.weather[0].main;
 
         const icon = getWeatherIcon(
@@ -666,7 +679,7 @@ boutonsJours.forEach(function(bouton, index) {
     });
 
     afficherPrevisionsHoraires(date);
-    afficherDetailsJour(date);
+    afficherDetailsJourAccueil(date);
 
 });
         dailyForecast.appendChild(card);
@@ -705,7 +718,7 @@ function afficherPrevisionsHoraires(date) {
         const vent = (forecast.wind.speed * 3.6).toFixed(1);
 
         const weather = forecast.weather[0].main;
-        
+
         console.log(
     heure,
     "météo =",
@@ -745,7 +758,7 @@ const forecastDetails =
 
 if (forecastDetails) {
 // Calculer et afficher les détails météo du jour sélectionné
-function afficherDetailsJour(date) {
+function afficherDetailsJourAccueil(date) {
 
     const previsionsJour = dataForecast.list.filter(function(forecast) {
 
@@ -1046,7 +1059,7 @@ console.log("Longitude :", longitude);
 
 // Récupérer la météo de la position
 const urlPosition =
-    `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=metric&lang=fr`;
+    `http://127.0.0.1:8000/weather-position?lat=${latitude}&lon=${longitude}`;
 
 fetch(urlPosition)
     .then(function(response) {
@@ -1077,7 +1090,7 @@ localStorage.setItem(
         );
         // Fermer l'écran de bienvenue
 welcomeOverlay.classList.add("hidden");
-    
+
 
     });
 
@@ -1206,7 +1219,7 @@ if (welcomeSearchForm) {
                 "oui"
                 );
 
-                // Afficher immédiatement la nouvelle ville 
+                // Afficher immédiatement la nouvelle ville
                 afficherMeteoAccueil(data);
 
 
@@ -1283,7 +1296,9 @@ if (previsionPage) {
     // =====================================================
 
     const villePrevision =
-    localStorage.getItem("villeRecherchee") || "Angers";
+    localStorage.getItem("villeActuelle") ||
+    localStorage.getItem("villeRecherchee") ||
+    "Angers";
 
     // Données des prévisions
     let previsionData = null;
@@ -1507,9 +1522,8 @@ if (previsionPage) {
 
         // Afficher les détails d'aujourd'hui
         afficherDetailsJour(
-            dateAujourdHui
-        );
-
+    dateAujourdHui
+);
 
     } catch (error) {
 
@@ -2169,7 +2183,7 @@ if (previsionPage) {
 
                         afficherPrevisionsHoraires(date);
                         // Changer la carte des détails
-                        afficherDetailsJour(date);
+                        afficherDetailsJourAccueil(date);
 
                     }
                 );
@@ -2341,9 +2355,11 @@ async function initialiserCarte() {
     10
 );
     L.tileLayer(
-    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    `https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${CARTO_API_KEY}`,
     {
-        attribution: "&copy; OpenStreetMap contributors"
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution/">CARTO</a>',
+        maxZoom: 20
     }
 ).addTo(map);
 
@@ -2456,7 +2472,7 @@ if (carteMapElement) {
         localStorage.getItem("villeRecherchee") ||
         "Angers";
 
-    
+
     let carte = null;
     let carteMarqueur = null;
     // =========================
@@ -2499,15 +2515,16 @@ if (carteMapElement) {
                 );
 
 
-            // Fond OpenStreetMap
+            // Fond CARTO
 
-            L.tileLayer(
-                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                {
-                    attribution:
-                        "&copy; OpenStreetMap contributors"
-                }
-            ).addTo(carte);
+L.tileLayer(
+    `https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png?key=${CARTO_API_KEY}`,
+    {
+        attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="https://carto.com/attribution/">CARTO</a>',
+        maxZoom: 20
+    }
+).addTo(carte);
 
 
             // =========================
@@ -3566,6 +3583,12 @@ if (previsionFavoriteButton) {
         document.getElementById("prevision-favorite-text");
 
 
+
+
+
+
+
+
     // =====================================================
     // RÉCUPÉRER LES FAVORIS
     // =====================================================
@@ -3782,5 +3805,803 @@ if (previsionFavoriteButton) {
     // =====================================================
 
     mettreAJourBoutonFavori();
+
+}
+
+
+/* =====================================================
+   ALERTES METEO
+===================================================== */
+
+const alertForm = document.getElementById("alert-create-form");
+
+if (alertForm) {
+
+
+
+    // =====================================================
+// ALERTE VUE PAR L'UTILISATEUR
+// =====================================================
+
+localStorage.setItem("weatherAlertsSeen", "true");
+
+
+
+    const alertsContainer =
+        document.getElementById("alerts-container");
+
+    const alertsEmpty =
+        document.getElementById("alerts-empty");
+
+    let alerts =
+        JSON.parse(
+            localStorage.getItem("weatherAlerts")
+        ) || [];
+
+
+    /* =====================================================
+       SAUVEGARDER LES ALERTES
+    ===================================================== */
+
+    function saveAlerts() {
+
+        localStorage.setItem(
+            "weatherAlerts",
+            JSON.stringify(alerts)
+        );
+
+    }
+
+
+    /* =====================================================
+       CRÉER UNE ALERTE
+    ===================================================== */
+
+    alertForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const city =
+                document
+                    .getElementById("alert-city")
+                    .value
+                    .trim();
+
+            const type =
+                document
+                    .getElementById("alert-type")
+                    .value;
+
+            const condition =
+                document
+                    .getElementById("alert-condition")
+                    .value;
+
+            const value =
+                Number(
+                    document
+                        .getElementById("alert-value")
+                        .value
+                );
+
+
+            if (!city || isNaN(value)) {
+                return;
+            }
+
+
+            try {
+
+                // Vérifier que la ville existe
+                const data =
+                    await getWeather(city);
+
+
+                if (data.cod !== 200) {
+
+                    alert("Ville introuvable.");
+
+                    return;
+
+                }
+
+
+                const nouvelleAlerte = {
+
+                    id: Date.now(),
+
+                    city: data.name,
+
+                    type: type,
+
+                    condition: condition,
+
+                    value: value,
+
+                    active: true,
+
+                    createdAt:
+                        new Date()
+                            .toLocaleString("fr-FR")
+
+                };
+
+
+                alerts.push(
+                    nouvelleAlerte
+                );
+
+
+                saveAlerts();
+
+
+                alertForm.reset();
+
+
+                // Vérifier immédiatement
+                await verifierToutesLesAlertes();
+
+
+                renderAlerts();
+
+
+            } catch (error) {
+
+                console.error(
+                    "Erreur lors de la création de l'alerte :",
+                    error
+                );
+
+                alert(
+                    "Impossible de récupérer la météo de cette ville."
+                );
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       VÉRIFIER UNE ALERTE
+    ===================================================== */
+
+    async function verifierAlerte(alert) {
+
+        if (!alert.active) {
+
+            return {
+                triggered: false,
+                currentValue: null
+            };
+
+        }
+
+
+        try {
+
+            const data =
+                await getWeather(alert.city);
+
+
+            if (data.cod !== 200) {
+
+                return {
+                    triggered: false,
+                    currentValue: null
+                };
+
+            }
+
+
+            /* =============================================
+               TEMPÉRATURE
+            ============================================= */
+
+            if (alert.type === "temperature") {
+
+                const temperature =
+                    data.main.temp;
+
+
+                const triggered =
+                    alert.condition === "below"
+                        ? temperature < alert.value
+                        : temperature > alert.value;
+
+
+                return {
+                    triggered: triggered,
+                    currentValue: temperature
+                };
+
+            }
+
+
+            /* =============================================
+               PRÉCIPITATIONS
+            ============================================= */
+
+            if (alert.type === "precipitation") {
+
+                const precipitation =
+                    data.rain && data.rain["1h"]
+                        ? data.rain["1h"]
+                        : 0;
+
+
+                const triggered =
+                    alert.condition === "below"
+                        ? precipitation < alert.value
+                        : precipitation > alert.value;
+
+
+                return {
+                    triggered: triggered,
+                    currentValue: precipitation
+                };
+
+            }
+
+
+            /* =============================================
+               VENT
+            ============================================= */
+
+            if (alert.type === "wind") {
+
+                const wind =
+                    data.wind.speed * 3.6;
+
+
+                const triggered =
+                    alert.condition === "below"
+                        ? wind < alert.value
+                        : wind > alert.value;
+
+
+                return {
+                    triggered: triggered,
+                    currentValue: wind
+                };
+
+            }
+
+
+            /* =============================================
+               CHALEUR
+            ============================================= */
+
+            if (alert.type === "heat") {
+
+                const temperature =
+                    data.main.temp;
+
+
+                const triggered =
+                    alert.condition === "below"
+                        ? temperature < alert.value
+                        : temperature > alert.value;
+
+
+                return {
+                    triggered: triggered,
+                    currentValue: temperature
+                };
+
+            }
+
+
+            /* =============================================
+               NEIGE
+            ============================================= */
+
+            if (alert.type === "snow") {
+
+                const neige =
+                    data.weather[0].main === "Snow";
+
+
+                return {
+                    triggered: neige,
+                    currentValue: neige
+                        ? "Neige détectée"
+                        : "Pas de neige"
+                };
+
+            }
+
+
+            /* =============================================
+               ORAGE
+            ============================================= */
+
+            if (alert.type === "storm") {
+
+                const orage =
+                    data.weather[0].main === "Thunderstorm";
+
+
+                return {
+                    triggered: orage,
+                    currentValue: orage
+                        ? "Orage détecté"
+                        : "Pas d'orage"
+                };
+
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "Erreur lors de la vérification de l'alerte :",
+                error
+            );
+
+        }
+
+
+        return {
+            triggered: false,
+            currentValue: null
+        };
+
+    }
+
+
+    /* =====================================================
+       VÉRIFIER TOUTES LES ALERTES
+    ===================================================== */
+
+    async function verifierToutesLesAlertes() {
+
+        for (const alert of alerts) {
+
+            if (!alert.active) {
+                continue;
+            }
+
+const resultat =
+    await verifierAlerte(alert);
+
+// Si l'alerte vient juste de se déclencher
+if (resultat.triggered && !alert.triggered) {
+    localStorage.setItem(
+        "weatherAlertsSeen",
+        "false"
+    );
+}
+
+alert.triggered =
+    resultat.triggered;
+
+alert.currentValue =
+    resultat.currentValue;
+
+        }
+        mettreAJourIndicateurAlertes();
+
+    }
+        // =====================================================
+    // INDICATEUR ROUGE DES ALERTES
+    // =====================================================
+
+    function mettreAJourIndicateurAlertes() {
+
+        const lienAlertes =
+            document.querySelector('a[href="alerte.html"]');
+
+        if (!lienAlertes) {
+            return;
+        }
+
+        const alerteDeclenchee =
+    alerts.some(function(alert) {
+        return alert.active && alert.triggered;
+    });
+
+    const alertesVues =
+    localStorage.getItem("weatherAlertsSeen") === "true";
+
+    if (alerteDeclenchee && !alertesVues) {
+    lienAlertes.classList.add("alert-nav-triggered");
+    } else {
+    lienAlertes.classList.remove("alert-nav-triggered");
+    }
+    }
+
+    /* =====================================================
+       AFFICHER LES ALERTES
+    ===================================================== */
+
+    function renderAlerts() {
+
+        alertsContainer.innerHTML = "";
+
+
+        if (alerts.length === 0) {
+
+            alertsEmpty.style.display = "block";
+
+            return;
+
+        }
+
+
+        alertsEmpty.style.display = "none";
+
+
+        alerts.forEach(function(alert) {
+
+            const card =
+                document.createElement("div");
+
+
+            card.className =
+                "alert-card";
+
+
+            let valeurActuelle = "";
+
+
+            if (alert.currentValue !== null &&
+                alert.currentValue !== undefined) {
+
+                if (
+                    alert.type === "temperature" ||
+                    alert.type === "heat"
+                ) {
+
+                    valeurActuelle =
+                        Math.round(
+                            alert.currentValue
+                        ) + " °C";
+
+                }
+
+                else if (
+                    alert.type === "precipitation"
+                ) {
+
+                    valeurActuelle =
+                        alert.currentValue.toFixed(1)
+                        + " mm";
+
+                }
+
+                else if (
+                    alert.type === "wind"
+                ) {
+
+                    valeurActuelle =
+                        alert.currentValue.toFixed(1)
+                        + " km/h";
+
+                }
+
+                else {
+
+                    valeurActuelle =
+                        alert.currentValue;
+
+                }
+
+            }
+
+
+            let statusHTML = "";
+
+
+            if (!alert.active) {
+
+                statusHTML = `
+                    <span class="alert-status-inactive">
+                        Inactive
+                    </span>
+                `;
+
+            }
+
+            else if (alert.triggered) {
+
+                statusHTML = `
+                    <span class="alert-status-triggered">
+                        Condition atteinte
+                    </span>
+                `;
+
+            }
+
+            else {
+
+                statusHTML = `
+                    <span class="alert-status-active">
+                        Active
+                    </span>
+                `;
+
+            }
+
+
+            card.innerHTML = `
+
+                <div class="alert-card-top">
+
+                    <div>
+
+                        <h4>
+                            ${alert.city}
+                        </h4>
+
+                        <p>
+                            ${getType(alert.type)}
+                            ${getCondition(alert.condition)}
+                            ${alert.value}
+                            ${getUnit(alert.type)}
+                        </p>
+
+                    </div>
+
+                    ${statusHTML}
+
+                </div>
+
+
+                ${
+                    valeurActuelle
+                        ? `
+                            <div class="alert-current-value">
+                                Météo actuelle :
+                                <strong>
+                                    ${valeurActuelle}
+                                </strong>
+                            </div>
+                          `
+                        : ""
+                }
+
+
+                <div class="alert-card-bottom">
+
+                    <small>
+                        Créée : ${alert.createdAt}
+                    </small>
+
+
+                    <div class="alert-actions">
+
+                        <button
+                            class="toggle-alert"
+                            data-id="${alert.id}"
+                        >
+                            ${
+                                alert.active
+                                    ? "Désactiver"
+                                    : "Activer"
+                            }
+                        </button>
+
+
+                        <button
+                            class="delete-alert"
+                            data-id="${alert.id}"
+                        >
+                            Supprimer
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            alertsContainer.appendChild(card);
+
+        });
+
+    }
+
+
+    /* =====================================================
+       ACTIVER / DÉSACTIVER / SUPPRIMER
+    ===================================================== */
+
+    alertsContainer.addEventListener(
+        "click",
+        async function(event) {
+
+            const id =
+                Number(
+                    event.target.dataset.id
+                );
+
+
+            /* SUPPRIMER */
+
+            if (
+                event.target.classList.contains(
+                    "delete-alert"
+                )
+            ) {
+
+                alerts =
+                    alerts.filter(
+                        function(alert) {
+                            return alert.id !== id;
+                        }
+                    );
+
+
+                saveAlerts();
+
+                renderAlerts();
+
+            }
+
+
+            /* ACTIVER / DÉSACTIVER */
+
+            if (
+                event.target.classList.contains(
+                    "toggle-alert"
+                )
+            ) {
+
+                const alert =
+                    alerts.find(
+                        function(alert) {
+                            return alert.id === id;
+                        }
+                    );
+
+
+                if (!alert) {
+                    return;
+                }
+
+
+                alert.active =
+                    !alert.active;
+
+
+                if (alert.active) {
+
+                    const resultat =
+    await verifierAlerte(alert);
+
+alert.triggered =
+    resultat.triggered;
+
+alert.currentValue =
+    resultat.currentValue;
+
+                }
+
+
+                saveAlerts();
+
+                renderAlerts();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       TEXTE DES TYPES
+    ===================================================== */
+
+    function getType(type) {
+
+        const types = {
+
+            temperature: "Température",
+
+            precipitation:
+                "Précipitations",
+
+            wind: "Vent",
+
+            heat: "Chaleur",
+
+            snow: "Neige",
+
+            storm: "Orage"
+
+        };
+
+
+        return types[type];
+
+    }
+
+
+    /* =====================================================
+       TEXTE DES CONDITIONS
+    ===================================================== */
+
+    function getCondition(condition) {
+
+        return condition === "above"
+            ? "supérieure à"
+            : "inférieure à";
+
+    }
+
+
+    /* =====================================================
+       UNITÉS
+    ===================================================== */
+
+    function getUnit(type) {
+
+        if (
+            type === "temperature" ||
+            type === "heat"
+        ) {
+
+            return " °C";
+
+        }
+
+
+        if (type === "wind") {
+
+            return " km/h";
+
+        }
+
+
+        if (type === "precipitation") {
+
+            return " mm";
+
+        }
+
+
+        return "";
+
+    }
+
+
+    /* =====================================================
+       INITIALISATION
+    ===================================================== */
+
+    async function initialiserAlertes() {
+
+        await verifierToutesLesAlertes();
+
+        mettreAJourIndicateurAlertes();
+
+        renderAlerts();
+
+    }
+
+
+    initialiserAlertes();
+
+
+    /* =====================================================
+       ACTUALISATION AUTOMATIQUE
+    ===================================================== */
+
+    setInterval(
+        async function() {
+
+            await verifierToutesLesAlertes();
+
+            mettreAJourIndicateurAlertes();
+
+            renderAlerts();
+        },
+        10 * 60 * 1000
+    );
 
 }

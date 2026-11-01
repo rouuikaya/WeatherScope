@@ -58,6 +58,336 @@
 
             </div>
         </nav>
-    </header>
+        </header>
+
+    <main class="alertes-page">
+
+        <!-- =====================================================
+             INTRODUCTION
+             ===================================================== -->
+
+        <section class="alertes-intro">
+
+            <div class="alertes-intro-text">
+
+                <h2>Mes alertes météo</h2>
+
+                <p>
+                    Créez des alertes personnalisées et soyez
+                    informé lorsqu'une condition météo que vous
+                    surveillez est réunie.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CRÉER UNE NOUVELLE ALERTE
+             ===================================================== -->
+
+        <section class="alert-create-section">
+
+            <h3>Créer une nouvelle alerte</h3>
+
+            <form id="alert-create-form">
+
+                <!-- Ville -->
+
+                <div class="alert-form-group">
+
+                    <label for="alert-city">
+                        Ville
+                    </label>
+
+                    <input
+                        type="search"
+                        id="alert-city"
+                        placeholder="Rechercher une ville..."
+                        autocomplete="off"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Type d'alerte -->
+
+                <div class="alert-form-group">
+
+                    <label for="alert-type">
+                        Type d'alerte
+                    </label>
+
+                    <select id="alert-type" required>
+
+                        <option value="temperature">
+                            Température
+                        </option>
+
+                        <option value="precipitation">
+                            Précipitations
+                        </option>
+
+                        <option value="wind">
+                            Vent
+                        </option>
+
+                        <option value="heat">
+                            Chaleur
+                        </option>
+
+                        <option value="snow">
+                            Neige
+                        </option>
+
+                        <option value="storm">
+                            Orage
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Condition -->
+
+                <div class="alert-form-group">
+
+                    <label for="alert-condition">
+                        Condition
+                    </label>
+
+                    <select id="alert-condition" required>
+
+                        <option value="below">
+                            Inférieure à
+                        </option>
+
+                        <option value="above">
+                            Supérieure à
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Valeur -->
+
+                <div class="alert-form-group">
+
+                    <label for="alert-value">
+                        Valeur
+                    </label>
+
+                    <input
+                        type="number"
+                        id="alert-value"
+                        placeholder="0"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Bouton -->
+
+                <button
+                    type="submit"
+                    id="create-alert-button"
+                >
+                    Créer l'alerte
+                </button>
+
+            </form>
+
+            <p class="alert-form-help">
+                Choisissez une ville, un type d'alerte,
+                une condition et une valeur.
+            </p>
+
+        </section>
+
+
+        <!-- =====================================================
+             MES ALERTES
+             ===================================================== -->
+
+        <section class="alerts-list-section">
+
+            <div class="alerts-list-header">
+
+                <div>
+
+                    <h3>Mes alertes actives</h3>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="alerts-container"
+                class="alerts-container"
+            >
+
+                <!-- Les alertes seront ajoutées ici
+                     automatiquement avec JavaScript -->
+
+            </div>
+
+
+            <!-- Message lorsqu'il n'y a aucune alerte -->
+
+            <div
+                id="alerts-empty"
+                class="alerts-empty"
+            >
+
+                <h4>Aucune alerte configurée</h4>
+
+                <p>
+                    Créez votre première alerte météo
+                    ci-dessus.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             VIGILANCE MÉTÉO
+             ===================================================== -->
+
+        <section class="weather-vigilance-section">
+
+            <div class="weather-vigilance-header">
+
+                <div>
+
+                    <h3>Vigilance météo</h3>
+
+                    <p>
+                        Les alertes officielles émises par
+                        les autorités météorologiques.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="weather-vigilance-container"
+                class="weather-vigilance-container"
+            >
+
+                <!-- Les informations de vigilance
+                     seront ajoutées plus tard -->
+
+                <div class="vigilance-empty">
+
+                    <strong>Aucune vigilance affichée</strong>
+
+                    <p>
+                        Les informations de vigilance seront
+                        disponibles ici.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             COMMENT ÇA FONCTIONNE
+             ===================================================== -->
+
+        <section class="alerts-how-section">
+
+            <h3>Comment ça fonctionne ?</h3>
+
+            <div class="alerts-how-grid">
+
+                <div class="alerts-how-item">
+
+                    <span class="alerts-how-number">
+                        1
+                    </span>
+
+                    <div>
+
+                        <h4>Créez une alerte</h4>
+
+                        <p>
+                            Choisissez une ville, un type
+                            d'alerte, une condition et une valeur.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="alerts-how-item">
+
+                    <span class="alerts-how-number">
+                        2
+                    </span>
+
+                    <div>
+
+                        <h4>Nous surveillons</h4>
+
+                        <p>
+                            WeatherScope vérifie les conditions
+                            météo pour vos alertes.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="alerts-how-item">
+
+                    <span class="alerts-how-number">
+                        3
+                    </span>
+
+                    <div>
+
+                        <h4>Vous êtes informé</h4>
+
+                        <p>
+                            Une alerte est affichée lorsque
+                            la condition est atteinte.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             INFORMATION
+             ===================================================== -->
+
+        <p class="alerts-data-info">
+            Les alertes sont basées sur les données météo
+            disponibles dans WeatherScope.
+        </p>
+
+    </main>
+    <script src="js/script.js"></script>
 </body>
 </html>

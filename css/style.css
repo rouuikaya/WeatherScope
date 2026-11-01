@@ -368,7 +368,7 @@ main{
 .leaflet-popup-content-wrapper{
     background: transparent !important;
     box-shadow: none !important;
-    border: none !important; 
+    border: none !important;
 }
 .leaflet-popup-content {
     margin: 0 !important;
@@ -419,7 +419,7 @@ main{
 .cities-weather {
     margin: 0 25px 25px 25px;
     padding: 20px;
-    
+
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.10);
     border-radius: 25px;
@@ -3021,4 +3021,1065 @@ main{
 #prevision-favorite-icon {
     font-size: 20px;
     line-height: 1;
+}
+
+/* =====================================================
+   PAGE ALERTES
+   ===================================================== */
+
+.alertes-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 55px 45px 80px;
+}
+
+
+/* =====================================================
+   INTRODUCTION
+   ===================================================== */
+
+.alertes-intro {
+    margin-bottom: 40px;
+}
+
+.alertes-intro-text {
+    max-width: 650px;
+}
+
+.alertes-intro-text h2 {
+    margin: 0 0 12px;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.alertes-intro-text p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+
+/* =====================================================
+   CRÉATION D'UNE ALERTE
+   ===================================================== */
+
+.alert-create-section {
+    padding: 28px;
+    margin-bottom: 28px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+
+    background: linear-gradient(
+        135deg,
+        rgba(20, 39, 67, 0.95),
+        rgba(13, 29, 52, 0.95)
+    );
+
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+
+.alert-create-section h3 {
+    margin: 0 0 25px;
+    font-size: 22px;
+}
+
+
+/* Formulaire */
+
+#alert-create-form {
+    display: grid;
+    grid-template-columns:
+        1.2fr
+        1.1fr
+        0.9fr
+        0.7fr
+        auto;
+
+    gap: 16px;
+    align-items: end;
+}
+
+.alert-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.alert-form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.alert-form-group input,
+.alert-form-group select {
+    width: 100%;
+    min-height: 48px;
+    padding: 0 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.04);
+    color: white;
+
+    font-size: 14px;
+    outline: none;
+
+    box-sizing: border-box;
+}
+
+.alert-form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.alert-form-group input:focus,
+.alert-form-group select:focus {
+    border-color: #3b82f6;
+}
+
+
+/* Options des select */
+
+.alert-form-group select option {
+    background: #10233d;
+    color: white;
+}
+
+
+/* Bouton */
+
+#create-alert-button {
+    min-height: 48px;
+    padding: 0 22px;
+
+    border: none;
+    border-radius: 8px;
+
+    background: #3b82f6;
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+#create-alert-button:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+
+/* Petit texte d'aide */
+
+.alert-form-help {
+    margin: 18px 0 0;
+
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   LISTE DES ALERTES
+   ===================================================== */
+
+.alerts-list-section {
+    padding: 28px;
+    margin-bottom: 28px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+
+    background: linear-gradient(
+        135deg,
+        rgba(20, 39, 67, 0.95),
+        rgba(13, 29, 52, 0.95)
+    );
+}
+
+.alerts-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 22px;
+}
+
+.alerts-list-header h3 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.alerts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+
+/* =====================================================
+   MESSAGE AUCUNE ALERTE
+   ===================================================== */
+
+.alerts-empty {
+    padding: 40px 20px;
+    text-align: center;
+
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.alerts-empty h4 {
+    margin: 0 0 8px;
+
+    color: white;
+    font-size: 18px;
+}
+
+.alerts-empty p {
+    margin: 0;
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   VIGILANCE MÉTÉO
+   ===================================================== */
+
+.weather-vigilance-section {
+    padding: 28px;
+    margin-bottom: 28px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+
+    background: linear-gradient(
+        135deg,
+        rgba(20, 39, 67, 0.95),
+        rgba(13, 29, 52, 0.95)
+    );
+}
+
+.weather-vigilance-header h3 {
+    margin: 0 0 8px;
+    font-size: 22px;
+}
+
+.weather-vigilance-header p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+}
+
+.weather-vigilance-container {
+    margin-top: 22px;
+}
+
+.vigilance-empty {
+    padding: 20px;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.vigilance-empty strong {
+    display: block;
+    margin-bottom: 6px;
+    color: white;
+}
+
+.vigilance-empty p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 14px;
+}
+
+
+/* =====================================================
+   COMMENT ÇA FONCTIONNE
+   ===================================================== */
+
+.alerts-how-section {
+    padding: 28px;
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+
+    background: linear-gradient(
+        135deg,
+        rgba(20, 39, 67, 0.95),
+        rgba(13, 29, 52, 0.95)
+    );
+}
+
+.alerts-how-section > h3 {
+    margin: 0 0 28px;
+    font-size: 22px;
+}
+
+.alerts-how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.alerts-how-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.alerts-how-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    background: #3b82f6;
+    color: white;
+
+    font-weight: 700;
+}
+
+.alerts-how-item h4 {
+    margin: 0 0 7px;
+    font-size: 16px;
+}
+
+.alerts-how-item p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   INFORMATION
+   ===================================================== */
+
+.alerts-data-info {
+    margin: 22px 0 0;
+
+    text-align: center;
+
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 1100px) {
+
+    #alert-create-form {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    #create-alert-button {
+        width: 100%;
+    }
+
+    .alerts-how-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .alertes-page {
+        padding: 35px 20px 60px;
+    }
+
+    .alertes-intro-text h2 {
+        font-size: 28px;
+    }
+
+    #alert-create-form {
+        grid-template-columns: 1fr;
+    }
+
+    .alert-create-section,
+    .alerts-list-section,
+    .weather-vigilance-section,
+    .alerts-how-section {
+        padding: 20px;
+    }
+}
+
+/* =====================================================
+   CARTES DES ALERTES
+   ===================================================== */
+
+.alert-card {
+    padding: 20px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.045);
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.alert-card:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(59, 130, 246, 0.35);
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   PARTIE SUPÉRIEURE
+========================= */
+
+.alert-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.alert-card-top h4 {
+    margin: 0 0 7px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+}
+
+.alert-card-top p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 14px;
+}
+
+
+/* =========================
+   STATUT
+========================= */
+
+.alert-status-active,
+.alert-status-inactive {
+    flex-shrink: 0;
+
+    padding: 6px 11px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.alert-status-active {
+    background: rgba(34, 197, 94, 0.12);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.alert-status-inactive {
+    background: rgba(148, 163, 184, 0.10);
+    color: #94a3b8;
+    border: 1px solid rgba(148, 163, 184, 0.20);
+}
+
+
+/* =========================
+   PARTIE INFÉRIEURE
+========================= */
+
+.alert-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 18px;
+    padding-top: 14px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.alert-card-bottom small {
+    color: rgba(255, 255, 255, 0.40);
+    font-size: 12px;
+}
+
+
+/* =========================
+   BOUTONS
+========================= */
+
+.alert-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.alert-actions button {
+    padding: 7px 12px;
+
+    border-radius: 7px;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.toggle-alert {
+    background: rgba(59, 130, 246, 0.10);
+    border: 1px solid rgba(59, 130, 246, 0.30);
+    color: #60a5fa;
+}
+
+.toggle-alert:hover {
+    background: rgba(59, 130, 246, 0.20);
+}
+
+.delete-alert {
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.25);
+    color: #f87171;
+}
+
+.delete-alert:hover {
+    background: rgba(239, 68, 68, 0.16);
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 600px) {
+
+    .alert-card-top {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .alert-card-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .alert-actions {
+        width: 100%;
+    }
+
+    .alert-actions button {
+        flex: 1;
+    }
+}
+
+.alert-nav-triggered {
+    color: #ef4444 !important;
+}
+
+/* =====================================================
+   PAGE À PROPOS
+   ===================================================== */
+
+.about-page {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 45px 45px 80px;
+}
+
+
+/* =====================================================
+   PRÉSENTATION
+   ===================================================== */
+
+.about-hero {
+    position: relative;
+    min-height: 430px;
+    margin-bottom: 45px;
+    padding: 55px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    border-radius: 18px;
+    background-image:
+        linear-gradient(
+            90deg,
+            rgba(8, 22, 40, 0.88),
+            rgba(8, 22, 40, 0.48)
+        ),
+        url("../images/montagnes.jpg");
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.20);
+}
+
+.about-hero-content {
+    max-width: 650px;
+}
+
+.about-label {
+    display: inline-block;
+    margin-bottom: 18px;
+    color: #60a5fa;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.about-hero h2 {
+    margin: 0;
+    color: white;
+    font-size: 52px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.about-hero-subtitle {
+    margin: 18px 0 0;
+    color: rgba(255, 255, 255, 0.90);
+    font-size: 22px;
+    line-height: 1.5;
+}
+
+.about-hero-description {
+    max-width: 650px;
+    margin-top: 35px;
+}
+
+.about-hero-description p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+
+/* =====================================================
+   SECTIONS
+   ===================================================== */
+
+.about-section {
+    margin-bottom: 45px;
+}
+
+.about-section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 25px;
+}
+
+.about-section-header h3 {
+    margin: 0;
+    color: white;
+    font-size: 25px;
+    font-weight: 650;
+}
+
+.about-section-header > p {
+    max-width: 500px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.52);
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: right;
+}
+
+.about-section-line {
+    display: block;
+    width: 45px;
+    height: 2px;
+    margin-top: 10px;
+    background: #3b82f6;
+}
+
+
+/* =====================================================
+   FONCTIONNALITÉS
+   ===================================================== */
+
+.about-features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.about-feature-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    min-height: 135px;
+    padding: 22px;
+    box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.035);
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.about-feature-card:hover {
+    background: rgba(255, 255, 255, 0.055);
+    border-color: rgba(59, 130, 246, 0.25);
+    transform: translateY(-2px);
+}
+
+.about-feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(59, 130, 246, 0.10);
+    color: #60a5fa;
+    font-size: 20px;
+}
+
+.about-feature-card h4 {
+    margin: 1px 0 7px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.about-feature-card p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.53);
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   TECHNOLOGIES
+   ===================================================== */
+
+.about-technologies-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.about-technology-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.about-technology-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 45px;
+    height: 45px;
+    border-radius: 10px;
+    background: rgba(59, 130, 246, 0.10);
+    color: #60a5fa;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.about-technology-card h4 {
+    margin: 2px 0 12px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.about-technology-card ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.about-technology-card li {
+    margin-bottom: 6px;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 13px;
+}
+
+.about-technology-card li:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =====================================================
+   LE PROJET
+   ===================================================== */
+
+.about-project-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    padding: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.about-project-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 11px;
+    background: rgba(59, 130, 246, 0.10);
+    color: #60a5fa;
+    font-size: 21px;
+}
+
+.about-project-card p {
+    max-width: 900px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+
+/* =====================================================
+   CRÉDITS
+   ===================================================== */
+
+.about-credits-card {
+    padding: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.about-credits-card > p {
+    margin: 0 0 8px;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.about-credits-card > p:nth-child(2) {
+    margin-bottom: 22px;
+    color: rgba(255, 255, 255, 0.42);
+    font-size: 13px;
+}
+
+.about-credits-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 9px 30px;
+    margin: 0;
+    padding-left: 18px;
+}
+
+.about-credits-list li {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.about-credits-list a {
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.about-credits-list a:hover {
+    color: #60a5fa;
+}
+
+
+/* =====================================================
+   CONTACT
+   ===================================================== */
+
+.about-contact-section {
+    margin-bottom: 0;
+}
+
+.about-contact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.about-contact p {
+    margin: 0 0 6px;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 14px;
+}
+
+.about-contact p:last-child {
+    margin-bottom: 0;
+}
+
+.about-contact-links {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.about-contact-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 85px;
+    padding: 10px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 13px;
+    text-decoration: none;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.about-contact-button:hover {
+    background: rgba(59, 130, 246, 0.10);
+    border-color: rgba(59, 130, 246, 0.30);
+    color: #60a5fa;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
+
+@media (max-width: 1000px) {
+
+    .about-features-grid,
+    .about-technologies-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .about-section-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .about-section-header > p {
+        text-align: left;
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .about-page {
+        padding: 30px 20px 60px;
+    }
+
+    .about-hero {
+        min-height: 380px;
+        padding: 35px 25px;
+    }
+
+    .about-hero h2 {
+        font-size: 38px;
+    }
+
+    .about-hero-subtitle {
+        font-size: 19px;
+    }
+
+    .about-features-grid,
+    .about-technologies-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-credits-list {
+        grid-template-columns: 1fr;
+    }
+
+    .about-contact {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .about-contact-links {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+}
+
+/* =====================================================
+   PAGE À PROPOS
+===================================================== */
+
+.about-feature-icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+
+.about-technology-icon img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+/* =====================================================
+   ICÔNES PAGE À PROPOS
+===================================================== */
+
+.about-feature-icon img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.about-technology-icon img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.about-project-icon img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
 }
